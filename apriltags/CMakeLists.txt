@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   cmake_modules
   message_generation
   geometry_msgs
+  tf
 )
 find_package(OpenCV REQUIRED)
 find_package(Eigen REQUIRED)
@@ -61,6 +62,8 @@ message(STATUS ${OpenCV_INCLUDE_DIRS})
 message(STATUS ${OpenCV_LIBRARIES})
 message(STATUS ${OpenCV_LDFLAGS})
 add_executable(apriltags src/apriltags.cpp)
+add_executable(tf_broadcaster src/visualization.cpp)
+target_link_libraries(tf_broadcaster ${catkin_LIBRARIES})
 target_link_libraries(apriltags ${catkin_LIBRARIES}
                                 ${Eigen_LIBRARIES}
                                 ${OpenCV_LIBRARIES}

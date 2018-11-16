@@ -7,8 +7,17 @@ project(localization)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
-
+find_package(catkin REQUIRED COMPONENTS
+  cv_bridge
+  std_msgs
+  sensor_msgs
+  image_transport
+  roscpp
+  cmake_modules
+  message_generation
+  geometry_msgs
+  tf
+)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -112,8 +121,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
+ include
+ ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library

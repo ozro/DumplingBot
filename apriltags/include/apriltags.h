@@ -1,5 +1,5 @@
 const double SMALL_TAG_SIZE = 0.0358968;
-const double MED_TAG_SIZE = 0.06096;
+const double MED_TAG_SIZE = 0.165;
 const double PAGE_TAG_SIZE = 0.165;
 
 const std::string DEFAULT_TAG_FAMILY = "Tag36h11";
@@ -9,7 +9,7 @@ const std::string DEFAULT_MARKER_TOPIC = "marker_array";
 const std::string DEFAULT_DETECTIONS_TOPIC = "detections";
 const std::string DEFAULT_DETECTIONS_IMAGE_TOPIC = "detections_image";
 const double DEFAULT_TAG_SIZE = MED_TAG_SIZE;
-const std::string DEFAULT_DISPLAY_TYPE = "CUBE";
+const std::string DEFAULT_DISPLAY_TYPE = "ARROW";
 
 // ROS parts
 ros::NodeHandlePtr node_;
