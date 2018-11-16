@@ -68,9 +68,6 @@ target_link_libraries(apriltags ${catkin_LIBRARIES}
                                 ${apriltagscpp_LIBRARY})
 add_dependencies(apriltags ${PROJECT_NAME}_gencpp)
 
-add_executable(control_arm src/control_arm.cpp)
-target_link_libraries(control_arm
-   ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
 
 
 install(TARGETS apriltags
