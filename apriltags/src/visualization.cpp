@@ -37,8 +37,7 @@ public:
 														message->detections[num].pose.orientation.y, 
 														message->detections[num].pose.orientation.z, 
 														message->detections[num].pose.orientation.w) );
-				br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", name));
-
+				br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "usb_cam", name));
 	    	} 
 	      
 	    }
