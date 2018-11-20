@@ -7,7 +7,7 @@
 
   <include file="$(find apriltags)/launch/usb_cam_apriltags.launch"/>
 
-  <node name="apriltags_tf" pkg="apriltags" type="tf_broadcaster"/>
+  <node name="apriltags_tf" pkg="apriltags" type="tf_broadcaster" output="screen"/>
 
   <node name="rviz" pkg="rviz" type="rviz" ns="rviz"/>
 </launch>

@@ -338,7 +338,7 @@ void ImageCallback(const sensor_msgs::ImageConstPtr& msg)
         Eigen::Quaternion<double> q(R);
         
         double tag_size = GetTagSize(detections[i].id);
-        cout << tag_size << " " << detections[i].id << endl;
+        //cout << tag_size << " " << detections[i].id << endl;
         
         // Fill in MarkerArray msg
         visualization_msgs::Marker marker_transform;
@@ -505,7 +505,7 @@ void GetParameterValues()
     node_->param("display_marker_edges", display_marker_edges_, false);
     node_->param("display_marker_axes", display_marker_axes_, false);
 
-    ROS_INFO("Tag Family: %s", tag_family_name_.c_str());
+    //ROS_INFO("Tag Family: %s", tag_family_name_.c_str());
 
     // Load tag specific configuration values.
     XmlRpc::XmlRpcValue tag_data;
