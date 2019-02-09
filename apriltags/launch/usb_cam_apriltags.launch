@@ -4,7 +4,7 @@
        to connect to an OpenNI device (e.g. Kinect). 
   -->
   <node pkg="apriltags" type="apriltags" name="apriltags" output="screen">
-    <param name="~default_tag_size" value="0.175" />
+    <param name="~default_tag_size" value="0.165" />
 
     <param name="~viewer" value="true" />
     <param name="~publish_detections_image" value="false" />
@@ -15,13 +15,13 @@
     <rosparam command="delete" param="tag_data" />
     <rosparam param="tag_data">
       "1": 
-        size: 0.175
+        size: 0.165
       "2":
-        size: 0.175
+        size: 0.165
     </rosparam>
 
-    <remap from="~image" to="/usb_cam/image_rect"/>
-    <remap from="~camera_info" to="/usb_cam/camera_info"/>
+    <remap from="~image" to="/camera1/image_raw"/>
+    <remap from="~camera_info" to="/camera1/camera_info"/>
     <remap from="~marker_array" to="/apriltags/marker_array"/>
     <remap from="~detections" to="/apriltags/detections"/>
   </node>

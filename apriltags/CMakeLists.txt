@@ -71,7 +71,9 @@ target_link_libraries(apriltags ${catkin_LIBRARIES}
                                 ${apriltagscpp_LIBRARY})
 add_dependencies(apriltags ${PROJECT_NAME}_gencpp)
 
-
+add_executable(localization src/localization.cpp)
+target_link_libraries(localization
+   ${catkin_LIBRARIES})
 
 install(TARGETS apriltags
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION} 

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="Tag1">
+  <model name="Tag10">
     <static>true</static>
     <link name="link">
       <pose>0 0 0.1 0 0 1.57</pose>
@@ -20,9 +20,9 @@
         </geometry>
         <material>
           <script>
-            <uri>model://Tag1/materials/scripts</uri>
-            <uri>model://Tag1/materials/textures</uri>
-            <name>vrc/Tag1</name>
+            <uri>model://Tag10/materials/scripts</uri>
+            <uri>model://Tag10/materials/textures</uri>
+            <name>vrc/Tag10</name>
           </script>
         </material>
       </visual>

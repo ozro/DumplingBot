@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+
+<robot name="mecanum" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- include gazebo plugins -->
+  <xacro:include filename="$(find mecanum_sim)/urdf/mecanum.gazebo" />
+
+  <xacro:property name="base_width" value="0.5" />   <!-- 14.5 in -->
+  <xacro:property name="base_length" value="0.5" />  <!-- 21 5/8 in -->
+  <xacro:property name="base_height" value="0.0635" />   <!-- 2.5 in  -->
+  <xacro:property name="wheel_radius" value="0.1016" /> <!-- 4.0 in  -->
+  <xacro:property name="wheel_width" value="0.0762" />  <!-- 3.0 in  -->
+  <xacro:property name="wheel_gap" value="0.0508" />    <!-- 2.0 in  -->
+  <xacro:property name="wheel_setback" value="0.041275" />    <!-- 1 5/8 in  -->
+  <xacro:property name="lidar_width" value="0.0508" />    <!-- 2.0 in  -->
+  <xacro:property name="lidar_length" value="0.0508" />    <!-- 2.0 in  -->
+  <xacro:property name="lidar_height" value="0.0762" />    <!-- 3.0 in  -->
+  <xacro:property name="lidar_setback" value="0.0127" />    <!-- 0.5 in  -->
+  <xacro:property name="camera_link1" value="0.05" /> <!-- Size of square 'camera' box -->
+  <xacro:property name="camera_link2" value="0.05" /> <!-- Size of square 'camera' box -->
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~ ~ ROBOT BASE ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <!-- Make a box for robot base -->
+  <link name="base_link">
+
+  	<!-- Draw imaginary box around the robot for collision detection -->
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+       <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+
+    <!-- Describe how to draw the box in 3d -->
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+	       <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-3" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <link name="fl_link">
+      <visual>
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
+
+      <inertial>
+        <mass value="0.1" />
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <link name="fr_link">
+        <visual>
+          <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+          </geometry>
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        </visual>
+
+        <collision>
+          <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+          </geometry>
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        </collision>
+
+        <inertial>
+          <mass value="0.1" />
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+      </link>
+      <link name="bl_link">
+          <visual>
+            <geometry>
+              <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          </visual>
+
+          <collision>
+            <geometry>
+              <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          </collision>
+
+          <inertial>
+            <mass value="0.1" />
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+          </inertial>
+        </link>
+
+        <link name="br_link">
+            <visual>
+              <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+              </geometry>
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </visual>
+
+            <collision>
+              <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+              </geometry>
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </collision>
+
+            <inertial>
+              <mass value="0.1" />
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+              <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+            </inertial>
+          </link>
+
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~ ~ Lidar ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <link name="laser_link">
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+       <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	       <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-4" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="joint1" type="fixed">      <!-- Fused connection? (using continuous tilts view)-->
+    <parent link="base_link"/>            <!--      robot link = parent     -->
+    <child link="laser_link"/>     <!-- forward camera link = child  -->
+    <origin xyz="${base_length/2 - lidar_length/2 - lidar_setback} 0 ${lidar_height}" rpy="0 0 0"/>   <!-- where child is relative to parent -->
+    <axis xyz="0 0 0"/>                   <!-- ...describes the axis of rotation? -->
+  </joint>
+
+  <joint name="fl_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="fl_link"/>
+      <origin rpy="0 0 0" xyz="${base_length/2 - wheel_setback} ${base_width/2 + wheel_gap} 0.0"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="fr_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="fr_link"/>
+      <origin rpy="0 0 0" xyz="${base_length/2 - wheel_setback} ${-base_width/2 - wheel_gap} 0.0"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="bl_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="bl_link"/>
+      <origin rpy="0 0 0" xyz="${-base_length/2 + wheel_setback} ${base_width/2 + wheel_gap} 0.0"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="br_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="br_link"/>
+      <origin rpy="0 0 0" xyz="${-base_length/2 + wheel_setback} ${-base_width/2 - wheel_gap} 0.0"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+  <joint name="camera_joint1" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="${camera_link1} 0 0.7" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_link1"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link1">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link1} ${camera_link1} ${camera_link1}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link1} ${camera_link1} ${camera_link1}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint2" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="${camera_link2} 0 0.5" rpy="0 0.785 0"/>
+    <parent link="base_link"/>
+    <child link="camera_link2"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link2">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link2} ${camera_link2} ${camera_link2}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link2} ${camera_link2} ${camera_link2}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+</robot>

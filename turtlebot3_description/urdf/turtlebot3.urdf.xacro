@@ -187,7 +187,7 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <origin xyz="0.064 -0.065 0.5" rpy="0 0 0"/>
+    <origin xyz="0.064 -0.065 0.5" rpy="0 0.785 0"/>
     <parent link="base_link"/>
     <child link="camera_link"/>
   </joint>
@@ -216,7 +216,7 @@
     </inertial>-->
   </link>
   <joint name="camera_joint1" type="fixed">
-    <origin xyz="0.064 -0.065 0.7" rpy="0 -1.57 0"/>
+    <origin xyz="0.064 -0.065 0.7" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="camera_link1"/>
   </joint>
