@@ -29,5 +29,12 @@ wheel_radius;
 mecanum_command
 Float32MultiArray: fl,fr,bl,br
 
+#localization 
+map.csv format:
+#id,px,py,pz,ox,oy,oz,ow
+need to change equation for dist 
+dependes on position and orientation of camera
+
+
 
 catkin_make

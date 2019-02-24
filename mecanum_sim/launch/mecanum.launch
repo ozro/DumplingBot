@@ -7,7 +7,7 @@
   <arg name="debug" default="false"/>
   <arg name="verbose" default="false"/>
   <arg name="world_name" default="$(find dumpling_gazebo)/worlds/dumpling.world"/>
-  <arg name="x_pos" default="1"/>
+  <arg name="x_pos" default="2.4"/>
   <arg name="y_pos" default="0.5"/>
   <arg name="z_pos" default="0.06"/>
   <!-- set command arguments -->
@@ -35,4 +35,28 @@
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 	args="-urdf -model mecanum -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
 
+<node pkg="apriltags" type="apriltags" name="apriltags" output="screen">
+    <param name="~default_tag_size" value="0.165" />
+
+    <param name="~viewer" value="false" />
+    <param name="~publish_detections_image" value="false" />
+
+    <param name="~display_type" value="ARROW" />
+    <param name="~marker_thickness" value="0.6" />
+
+    <rosparam command="delete" param="tag_data" />
+    <rosparam param="tag_data">
+      "1": 
+        size: 0.165
+      "2":
+        size: 0.165
+    </rosparam>
+
+    <remap from="~image" to="/camera2/image_raw"/>
+    <remap from="~camera_info" to="/camera2/camera_info"/>
+    <remap from="~marker_array" to="/apriltags/marker_array"/>
+    <remap from="~detections" to="/apriltags/detections"/>
+  </node>
+<node name="localization_node" pkg="localization" type="localization_node"/>
+<node name="mecanum_control" pkg="mecanum_sim" type="mecanum_control"/>
 </launch>

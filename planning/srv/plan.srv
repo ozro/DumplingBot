@@ -1,0 +1,4 @@
+int32 start
+int32 goal
+---
+geometry_msgs/Vector3[] path
