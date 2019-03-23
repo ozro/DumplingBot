@@ -1,13 +1,14 @@
 # DumplingBot
 
 ## apriltagslam package
-Install:  
-gtsam from https://bitbucket.org/gtborg/gtsam/downloads/  
-Download apriltagslam source code from
+Install gstam:  
+>https://bitbucket.org/gtborg/gtsam/downloads/  
+
+Download apriltagslam source code:
 ```
 git clone https://github.com/ProjectArtemis/aprilslam
 ```
-Change mapper.cpp:  
+Change `mapper.cpp`:  
 ```C++
 Mapper::Mapper(double relinearize_thresh, int relinearize_skip)
     : init_(false),
@@ -22,7 +23,8 @@ Mapper::Mapper(double relinearize_thresh, int relinearize_skip)
 }
 ```
 
-## Mecanum drive need to measure:
+## Mecanum drive parameters
+Need to measure the following
 * `base_width`
 * `base_length`
 * `wheel_gap`
@@ -34,16 +36,15 @@ To send command to `mecanum_command`
 Float32MultiArray: fl,fr,bl,br
 ```
 
-## localization 
+## Localization 
 `map.csv` format:  
 `id,px,py,pz,ox,oy,oz,ow`  
-need to change equation for dist 
-dependes on position and orientation of camera
+need to change equation for dist, depends on position and orientation of camera
 
 # DumplingBot Web User Interface
 
 ## Dependencies
-* `ros-kinetic-rosbridge-suite`
+```sudo apt-get install ros-kinetic-rosbridge-suite```
 
 ## To run
 Ensure roscore is running on the local machine.
