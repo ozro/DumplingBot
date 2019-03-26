@@ -44,17 +44,21 @@ need to change equation for dist, depends on position and orientation of camera
 # DumplingBot Web User Interface
 
 ## Dependencies
-```sudo apt-get install ros-kinetic-rosbridge-suite```
+```$ sudo apt-get install ros-kinetic-rosbridge-suite```
 
 ## To run
 Ensure roscore is running on the local machine.
+
 ```
 $ source /opt/ros/kinetic/setup.bash
 $ roscore
 ```
+
 Run all nodes needed to operate the robot.
 Start the rosbridge server. By default this runs on port 9090.
+
 ```
 roslaunch rosbridge_server rosbridge_websocket.launch
 ```
+
 Now open `index.html` with a web browser.
