@@ -30,9 +30,9 @@ function initVideo(){
     video = $('#camera img')[0];
     video.src = "http://" + robot_IP + ":8080/stream?topic=" + camera_topic + "&type=mjpeg&quality=80";
 
-    $('#map .text-primary').text("Feed: " + map_topic);
-    video = $('#map img')[0];
-    video.src = "http://" + robot_IP + ":8080/stream?topic=" + map_topic + "&type=mjpeg&quality=80";
+//     $('#map .text-primary').text("Feed: " + map_topic);
+//     video = $('#map img')[0];
+//     video.src = "http://" + robot_IP + ":8080/stream?topic=" + map_topic + "&type=mjpeg&quality=80";
 }
 
 function initNodes(){

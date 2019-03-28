@@ -48,283 +48,285 @@
         <div id="content">
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Content Row -->
             <div class="row">
-              <!-- Connection card -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div id="connection_card" class="card border-left-danger shadow h-100 py-0">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-md font-weight-bold text-danger text-uppercase mb-1">ROS Status</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- State Card -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div id="state_card" class="card border-left-primary shadow h-100 py-0">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-md font-weight-bold text-primary text-uppercase mb-1">Robot State</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Target Card -->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div id="target_card" class="card border-left-info shadow h-100 py-0">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-md font-weight-bold text-info text-uppercase mb-1">Target</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Battery Card-->
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div id="battery_card" class="card border-left-success shadow h-100 py-0">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-md font-weight-bold text-success text-uppercase mb-1">Battery</div>
-                        <div class="row no-gutters align-items-center">
-                          <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0 V</div>
-                          </div>
-                          <div class="col">
-                            <div class="progress progress-sm mr-2">
-                              <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Content Row -->
-            <div class="row">
-
               <!-- Content Column -->
               <div class="col-lg-6 mb-4">
-                <!-- Motor Card -->
+                <!-- Content Row -->
                 <div class="row">
-                  <div class="col-lg-6 mb-2">
-                    <div id="motor_status_0" class="card shadow mb-2">
-                      <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Motor 0</h6>
-                      </div>
+                  <!-- Connection card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="connection_card" class="card border-left-danger shadow h-100 py-0">
                       <div class="card-body">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
-                            </div>
-                            <div class="col-lg-6">
-                              <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
-                            </div>
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-danger text-uppercase mb-1">ROS Status</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
                           </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="target">
-                                <h4 class="small">Target <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                              <div class="actual">
-                                <h4 class="small">Actual <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
-                            <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
-                            <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                          <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 mb-2">
-                    <div id="motor_status_1" class="card shadow mb-2">
-                      <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Motor 1</h6>
-                      </div>
+                  <!-- Battery Card-->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="battery_card" class="card border-left-success shadow h-100 py-0">
                       <div class="card-body">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
-                            </div>
-                            <div class="col-lg-6">
-                              <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="target">
-                                <h4 class="small">Target <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-success text-uppercase mb-1">Battery</div>
+                            <div class="row no-gutters align-items-center">
+                              <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0 V</div>
                               </div>
-                              <div class="actual">
-                                <h4 class="small">Actual <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                              <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                  <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="row">
-                            <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
-                            <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
-                            <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                          <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- State Card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="state_card" class="card border-left-primary shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-primary text-uppercase mb-1">Robot State</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Target Card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="target_card" class="card border-left-info shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-info text-uppercase mb-1">Target</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <!-- Content Row -->
+                <div class="row">
+                  <div class="col-lg-12 mb-2">
+                    <!-- Motor Card -->
+                    <div class="row">
+                      <div class="col-lg-6 mb-2">
+                        <div id="motor_status_0" class="card shadow mb-2">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Motor 0</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
+                                </div>
+                                <div class="col-lg-6">
+                                  <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="target">
+                                    <h4 class="small">Target <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                  <div class="actual">
+                                    <h4 class="small">Actual <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
+                                <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
+                                <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-2">
+                        <div id="motor_status_1" class="card shadow mb-2">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Motor 1</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
+                                </div>
+                                <div class="col-lg-6">
+                                  <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="target">
+                                    <h4 class="small">Target <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                  <div class="actual">
+                                    <h4 class="small">Actual <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
+                                <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
+                                <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6 mb-2">
+                        <div id="motor_status_2" class="card shadow mb-2">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Motor 2</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
+                                </div>
+                                <div class="col-lg-6">
+                                  <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="target">
+                                    <h4 class="small">Target <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                  <div class="actual">
+                                    <h4 class="small">Actual <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
+                                <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
+                                <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-2">
+                        <div id="motor_status_3" class="card shadow mb-2">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Motor 3</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
+                                </div>
+                                <div class="col-lg-6">
+                                  <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <div class="target">
+                                    <h4 class="small">Target <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                  <div class="actual">
+                                    <h4 class="small">Actual <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
+                                <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
+                                <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6 mb-2">
-                    <div id="motor_status_2" class="card shadow mb-2">
-                      <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Motor 2</h6>
-                      </div>
-                      <div class="card-body">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
-                            </div>
-                            <div class="col-lg-6">
-                              <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="target">
-                                <h4 class="small">Target <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                              <div class="actual">
-                                <h4 class="small">Actual <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
-                            <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
-                            <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-2">
-                    <div id="motor_status_3" class="card shadow mb-2">
-                      <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Motor 3</h6>
-                      </div>
-                      <div class="card-body">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
-                            </div>
-                            <div class="col-lg-6">
-                              <span><span class="small">Encoder:</span><span class="encoder float-right font-weight-bold">0</span></span>
-                            </div>
-                          </div>
-                          <hr>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="target">
-                                <h4 class="small">Target <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                              <div class="actual">
-                                <h4 class="small">Actual <span class="speed float-right">0</span></h4>
-                                <div class="progress mb-4">
-                                  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-4 mb-6"><span class="volt">0</span> V</div>
-                            <div class="col-lg-4 mb-6"><span class="amps">0</span> A</div>
-                            <div class="col-lg-4 mb-6"><span class="temp">0</span> &deg;C</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
-
+              
               <div class="col-lg-6 mb-4">
-
-                <!-- Camera -->
-                <div id="camera" class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary"></h6>
-                  </div>
-                  <div class="card-body">
-                    <div class="text-center">
-                      <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 50rem;" src="">
+                  <!-- Camera -->
+                  <div id="camera" class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary"></h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 50rem;" src="">
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!-- Map -->
-                <div id="map" class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Map</h6>
-                  </div>
-                  <div class="card-body">
-                    <div class="text-center">
-                      <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 50rem;" src="">
+                  <!-- Map -->
+                  <div id="map" class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 50rem;" src="">
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
 
