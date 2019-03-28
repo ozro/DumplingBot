@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="css/sb-admin-2.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> -->
+    <link href="vendor/fontawesome-free-5.8.1-web/css/all.min.css" rel="stylesheet" type="text/css">
   </head>
 
   <body class="bg-light">
@@ -21,25 +23,25 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <!-- Sidebar
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
         <hr class="sidebar-divider">
         <li class="nav-item active">
           <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-5x fa-utensils"></i>
             <span>Delivery</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-truck-loading"></i>
             <span>Loading</span></a>
         </li>
-      </ul> -->
+      </ul>
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -49,7 +51,7 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <div class="row">
-              <!-- Content Column -->
+              <!-- Motor Content Column -->
               <div class="col-lg-6 mb-4">
                 <!-- Content Row -->
                 <div class="row">
@@ -59,11 +61,11 @@
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="text-md font-weight-bold text-danger text-uppercase mb-1">ROS Status</div>
+                            <div class="text-md font-weight-bold text-danger text-uppercase mb-1">ROS-Bridge</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
                           </div>
                           <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <i class="fas fa-signal fa-2x text-gray-300"></i>
                           </div>
                         </div>
                       </div>
@@ -78,17 +80,17 @@
                             <div class="text-md font-weight-bold text-success text-uppercase mb-1">Battery</div>
                             <div class="row no-gutters align-items-center">
                               <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0 V</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0 %</div>
                               </div>
                               <div class="col">
-                                <div class="progress progress-sm mr-2">
+                                <!-- <div class="progress progress-sm mr-2 mt-2"></div>
                                   <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                                </div> -->
                               </div>
                             </div>
                           </div>
                           <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            <i class="fas fa-car-battery fa-2x text-gray-300"></i>
                           </div>
                         </div>
                       </div>
@@ -100,11 +102,11 @@
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
                           <div class="col mr-2">
-                            <div class="text-md font-weight-bold text-primary text-uppercase mb-1">Robot State</div>
+                            <div class="text-md font-weight-bold text-primary text-uppercase mb-1">State</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
                           </div>
                           <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <i class="fas fa-globe fa-2x text-gray-300"></i>
                           </div>
                         </div>
                       </div>
@@ -120,7 +122,7 @@
                             <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
                           </div>
                           <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            <i class="fas fa-map-marker-alt fa-2x text-gray-300"></i>
                           </div>
                         </div>
                       </div>
@@ -128,10 +130,10 @@
                   </div>
                   
                 </div>
-                <!-- Content Row -->
+                <!-- Motor Content Row -->
                 <div class="row">
                   <div class="col-lg-12 mb-2">
-                    <!-- Motor Card -->
+                    <!-- Motor Cards -->
                     <div class="row">
                       <div class="col-lg-6 mb-2">
                         <div id="motor_status_0" class="card shadow mb-2">
@@ -300,10 +302,56 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-lg-12 mb-2">
+                        <div id="motor_status_4" class="card shadow mb-2">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Receptacle Motor</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="target">
+                                    <h4 class="small">Target <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="actual">
+                                    <h4 class="small">Actual <span class="speed float-right">0</span></h4>
+                                    <div class="progress mb-4">
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-3">
+                                  <span><span class="small">Status:</span><span class="error_status float-right font-weight-bold">NULL</span></span>
+                                </div>
+                                <div class="col-lg-2 offset-lg-3">
+                                  <span class="volt">0</span> V
+                                </div>
+                                <div class="col-lg-2">
+                                  <span class="volt">0</span> A
+                                </div>
+                                <div class="col-lg-2">
+                                  <span class="volt">0</span> &deg;C
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              
+            
               <div class="col-lg-6 mb-4">
                   <!-- Camera -->
                   <div id="camera" class="card shadow mb-4">

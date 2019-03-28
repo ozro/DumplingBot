@@ -21,7 +21,7 @@ function initROS(){
         console.log('Connection to websocket server closed.');
         $('#connection_card').removeClass('border-left-success').addClass('border-left-danger');
         $('#connection_card .text-md').removeClass('text-success').addClass('text-danger');
-        $('#connection_card .h5').text('Disconnected');
+        $('#connection_card .h5').text('Closed');
     });
 }
 
