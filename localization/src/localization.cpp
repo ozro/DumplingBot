@@ -2,25 +2,32 @@
 #include <apriltags/AprilTagDetections.h> 
 #include <geometry_msgs/Twist.h> 
 #include <geometry_msgs/Vector3.h> 
+#include <geometry_msgs/PoseStamped.h> 
 #include <fstream>
 #include <std_msgs/Float32MultiArray.h>
 #include <eigen3/Eigen/Geometry>
+#include <nav_msgs/Odometry.h>
+#include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_datatypes.h>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+double pi = 3.1415926535897932385;
 class localization{
-	private:
+  private:
     ros::NodeHandle n_;
     ros::Subscriber april_detection;
     ros::Publisher command_pub;
     ros::Publisher odom_pub;
     std::vector<std::vector<float> > map;
     Eigen::Quaterniond cur_q;
-    geometry_msgs::Vector3 cur_pose;
+    nav_msgs::Odometry cur_pose;
+    tf::TransformBroadcaster broadcaster;
+    tf::TransformListener listener;
     float cur_px;
     float cur_py;
     float cur_pz;
@@ -32,12 +39,13 @@ class localization{
     float update_x;
     float update_y;
     float update_angle;
+    bool updated;
   public:
     
     void init(){
       april_detection = n_.subscribe("/apriltags/detections",100,&localization::detection_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
-      odom_pub = n_.advertise<geometry_msgs::Vector3>("odom",10);
+      odom_pub = n_.advertise<nav_msgs::Odometry>("vo_odom",10);
       ros::NodeHandle n_private("~");
       initialize_map();
 
@@ -69,34 +77,75 @@ void localization::initialize_map(){
 void localization::detection_callback(const apriltags::AprilTagDetections::ConstPtr& message){
   if(message->detections.size()>0){
     int id = message->detections[0].id;
+    std::string tag_name;
+    
+    if (id ==5){
+      tag_name = "tag5";
+    }
+    if (id ==13){
+      tag_name = "tag13";
+    }
+    if (id ==9){
+      tag_name = "tag9";
+    }
+    if (id ==12){
+      tag_name = "tag12";
+    }
+    if (id ==11){
+      tag_name = "tag11";
+    }
     float tag_x = this->map[id][1];
     float tag_y = this->map[id][2];
-
-    //ROS_INFO("x:%f",message->detections[0].pose.position.x);
-    //ROS_INFO("y:%f",message->detections[0].pose.position.y);
-    //ROS_INFO("z:%f",message->detections[0].pose.position.z);
+    float tag_z = this->map[id][3];
+    float tag_ox = this->map[id][4];
+    float tag_oy = this->map[id][5];
+    float tag_oz = this->map[id][6];
+    float tag_ow = this->map[id][7];
+    ROS_INFO("aaaaaaaaaaaaaaaaaaaaa%i,%f,%f,%f,%f,%f,%f,%f",id,tag_x,tag_y,tag_z,tag_ox,tag_oy,tag_oz,tag_ow);
+    /*
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(0,0,0,1), tf::Vector3(tag_x,tag_y, tag_z)),
+        ros::Time::now(),"map", "test_tag"));
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(3/4*pi,0.0,0.0)), tf::Vector3(0,0, 0)),
+        ros::Time::now(),"test_tag", "test_tag1"));*/
+    ROS_INFO("x:%f",message->detections[0].pose.position.x);
+    ROS_INFO("y:%f",message->detections[0].pose.position.y);
+    ROS_INFO("z:%f",message->detections[0].pose.position.z);
     cur_px = message->detections[0].pose.position.x;
     cur_py = message->detections[0].pose.position.y;
-    
+    cur_pz = message->detections[0].pose.position.z;
     cur_q.x() = message->detections[0].pose.orientation.x;
     cur_q.y() = message->detections[0].pose.orientation.y;
     cur_q.z() = message->detections[0].pose.orientation.z;
     cur_q.w() = message->detections[0].pose.orientation.w;
-    Eigen::Vector3d cur_euler = cur_q.toRotationMatrix().eulerAngles(0, 1, 2);
-    dist = sqrt((0.5-cur_py)*(0.5-cur_py)+cur_px*cur_px);
-    update_angle =cur_euler[2];
-    del_x = dist*cos(update_angle); 
-    del_y = dist*sin(update_angle);
-    update_x = tag_x-del_x;
-    update_y = tag_y-del_y;
+    geometry_msgs::PoseStamped vec;
+    geometry_msgs::PoseStamped vec_out;
+    vec.header.frame_id = "optical";
+    vec.pose.position.x =cur_px;
+    vec.pose.position.y = cur_py;
+    vec.pose.position.z = cur_pz;
+    vec.pose.orientation.x = cur_q.x();
+    vec.pose.orientation.y = cur_q.y();
+    vec.pose.orientation.z = cur_q.z();
+    vec.pose.orientation.w = cur_q.w();
     
-    ROS_INFO("update_x %f",update_x);
-    ROS_INFO("update_y %f",update_y);
-    
-    cur_pose.x =update_x;
-    cur_pose.y = update_y;
-    cur_pose.z = update_angle;
-    odom_pub.publish(cur_pose);
+    listener.transformPose("base_link", vec, vec_out);
+
+    ROS_INFO("tf: %f, %f, %f", vec_out.pose.position.x,vec_out.pose.position.y,vec_out.pose.position.z);
+    float ox = vec_out.pose.orientation.x;
+    float oy = vec_out.pose.orientation.y;
+    float oz = vec_out.pose.orientation.z;
+    float ow = vec_out.pose.orientation.w;
+    tf::Quaternion quat(ox,oy,oz,ow);
+  
+    double roll, pitch, yaw;
+    tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+    tf::Transform tag_in_base = tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(roll,pitch,yaw)), tf::Vector3(vec_out.pose.position.x, vec_out.pose.position.y, vec_out.pose.position.z));
+    tf::StampedTransform base_in_tag(tag_in_base.inverse(),ros::Time::now(),tag_name,"base_link");
+    broadcaster.sendTransform(tf::StampedTransform(base_in_tag,ros::Time::now(),tag_name,"base_link"));    
   }
 }
 
@@ -106,8 +155,9 @@ int main(int argc, char **argv) {
     ros::init(argc, argv,"localization");
     localization server;
     server.init();
+    tf::TransformListener listener;
     while(ros::ok()){
-      //server.send_vel();
+      //server.localize();
       ros::spinOnce();
       ros::Duration(0.1).sleep();
 

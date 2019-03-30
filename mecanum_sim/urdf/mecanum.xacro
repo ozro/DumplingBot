@@ -5,8 +5,8 @@
   <!-- include gazebo plugins -->
   <xacro:include filename="$(find mecanum_sim)/urdf/mecanum.gazebo" />
 
-  <xacro:property name="base_width" value="0.5" />   <!-- 14.5 in -->
-  <xacro:property name="base_length" value="0.5" />  <!-- 21 5/8 in -->
+  <xacro:property name="base_width" value="0.3476" />   <!-- 14.5 in -->
+  <xacro:property name="base_length" value="0.4" />  <!-- 21 5/8 in -->
   <xacro:property name="base_height" value="0.0635" />   <!-- 2.5 in  -->
   <xacro:property name="wheel_radius" value="0.1016" /> <!-- 4.0 in  -->
   <xacro:property name="wheel_width" value="0.0762" />  <!-- 3.0 in  -->
@@ -202,7 +202,7 @@
   </joint>
   <joint name="camera_joint1" type="fixed">
     <axis xyz="0 1 0" />
-    <origin xyz="${camera_link1} 0 0.7" rpy="0 0 0"/>
+    <origin xyz="-0.05 0 0.7" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="camera_link1"/>
   </joint>

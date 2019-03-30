@@ -15,7 +15,9 @@ class Mecanum_drive{
     float wheel_setback;
     float wheel_radius;
     
+    
   public:
+    
     void init(){
       cmd_vel_ = n_.subscribe("/cmd_vel",100,&Mecanum_drive::vel_callback,this);
       command_pub = n_.advertise<std_msgs::Float32MultiArray>("mecanum_cmd",10);
@@ -54,6 +56,7 @@ void Mecanum_drive::vel_callback(const geometry_msgs::Twist::ConstPtr& velocity)
   ROS_INFO("rear_left:%f",wheel_rear_left);
   ROS_INFO("rear_right:%f",wheel_rear_right);
   command_pub.publish(cmd);
+  
 }
 
 
@@ -65,6 +68,7 @@ int main(int argc, char **argv) {
     send_command.init();
     while(ros::ok()){
       ros::spinOnce();
+      
 
     }
     return 0;
