@@ -1,6 +1,6 @@
 var robot_IP = "localhost";
-var camera_topic = "/camera/image_raw";
-var map_topic = "/camera/image_raw";
+var camera_topic = "/usb_cam/image_raw";
+var map_topic = "/usb_cam/image_raw";
 var error_topic = "/motor_status/errors";
 var limit_topic = "/motor_status/limit_status";
 var target_speed_topic = "/motor_status/target_speeds";
@@ -9,8 +9,8 @@ var temps_topic = "/motor_status/temps";
 var curr_topic = "/motor_status/currents";
 var volt_topic = "/motor_status/voltages";
 var enc_topic = "/motor_status/encoder_counts";
-var target_topic = "";
-var state_topic = "";
+var target_topic = "/target";
+var state_topic = "/state";
 
 var ros;
 // Initialize ROS connection
@@ -63,9 +63,25 @@ function initNodes(){
 
     error_sub.subscribe(function(message){
         var len = message.data.length;
+        console.log("Received +");
         for (var i = 0; i < len; i++){
-            var msg = message.data[i];
-            $('#motor_status_'+i+" .error_status").text = msg;
+            var data = message.data[i];
+            switch(data){
+                case 0:
+                    msg = "Running";
+                    $('#motor_status_'+i+" .progress-bar").removeClass('bg-danger').removeClass('bg-warning').addClass('bg-primary');
+                    break;
+                case 1:
+                    msg = "Stopped";
+                    $('#motor_status_'+i+" .progress-bar").removeClass('bg-danger').removeClass('bg-primary').addClass('bg-warning');
+                    break;
+                default:
+                    msg = "Error";
+                    $('#motor_status_'+i+" .progress-bar").removeClass('bg-primary').removeClass('bg-warning').addClass('bg-danger');
+                    break;
+            }
+
+            $('#motor_status_'+i+" .error_status").text(msg);
         }
     });
     
@@ -76,11 +92,15 @@ function initNodes(){
     });
 
     target_speed_sub.subscribe(function(message){
+        console.log("Received" + message.data);
         var len = message.data.length;
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
-            $('#motor_status_'+i+" .target .speed").text = msg;
-            $('#motor_status_'+i+" .target .progress-bar").val(msg/6400 + 0.5)
+            if(i > 1){
+                msg *= -1;
+            }
+            $('#motor_status_'+i+" .target .speed").text(msg);
+            $('#motor_status_'+i+" .target .progress-bar").css('width', (msg/6400 + 0.5) * 100 + '%');
         }
     });
     
@@ -94,8 +114,11 @@ function initNodes(){
         var len = message.data.length;
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
-            $('#motor_status_'+i+" .actual .speed").text = msg;
-            $('#motor_status_'+i+" .actual .progress-bar").val(msg/6400 + 0.5)
+            if(i > 1){
+                msg *= -1;
+            }
+            $('#motor_status_'+i+" .actual .speed").text(msg);
+            $('#motor_status_'+i+" .actual .progress-bar").css('width', (msg/6400 + 0.5)*100 + '%');
         }
     });
     
@@ -111,19 +134,24 @@ function initNodes(){
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
             sum += msg;
-            $('#motor_status_'+i+" .volt").text = msg + " V";
+            $('#motor_status_'+i+" .volt").text(msg/1000);
         }
         var avg = sum/4;
-        var percent = (avg - 12)/(14.7-12) * 100;
-        $('#battery_card .h5').txt = avg + " V" + " - " + percent + " %";
+        var percent = (avg/1000 - 12)/(14.7-12) * 100;
+        avg = Math.round(avg*10/1000)/10;
+        percent = Math.round(percent);
+        $('#battery_card .h5').text(avg + " V" + " - " + percent + " %");
         if(percent > 75){
             $('#battery_card .text-md').removeClass('text-danger').removeClass('text-warning').addClass('text-success');
+            $('#battery_card').removeClass('border-left-danger').removeClass('border-left-warning').addClass('border-left-success');
         }
         else if (percent < 25){
             $('#battery_card .text-md').removeClass('text-danger').removeClass('text-success').addClass('text-warning');
+            $('#battery_card').removeClass('border-left-danger').removeClass('border-left-success').addClass('border-left-warning');
         }
         else{
             $('#battery_card .text-md').removeClass('text-success').removeClass('text-warning').addClass('text-danger');
+            $('#battery_card').removeClass('border-left-success').removeClass('border-left-warning').addClass('border-left-danger');
         }
     });
     
@@ -137,7 +165,7 @@ function initNodes(){
         var len = message.data.length;
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
-            $('#motor_status_'+i+" .amps").text = msg + " A";
+            $('#motor_status_'+i+" .amps").text(msg/1000);
         }
     });
     
@@ -151,14 +179,14 @@ function initNodes(){
         var len = message.data.length;
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
-            $('#motor_status_'+i+" .temp").text = msg + " &deg;C";
+            $('#motor_status_'+i+" .temp").text(msg/10);
         }
     });
 
     var enc_sub = new ROSLIB.Topic({
         ros:ros,
         name:enc_topic,
-        messageType:'std_msgs/UInt16MultiArray'
+        messageType:'rasp/EncoderCounts'
     });
 
     enc_sub.subscribe(function(message){
@@ -166,7 +194,7 @@ function initNodes(){
         for (var i = 0; i < len; i++){
             var msg = message.data[i];
             sum += msg;
-            $('#motor_status_'+i+" .encoder").text = msg;
+            $('#motor_status_'+i+" .encoder").text(msg);
         }
     });
         
@@ -177,7 +205,7 @@ function initNodes(){
     });
 
     state_sub.subscribe(function(message){
-        $('#state_card .h5').txt = message.data;
+        $('#state_card .h5').text(message.data);
     });
     
     var target_sub = new ROSLIB.Topic({
@@ -187,7 +215,7 @@ function initNodes(){
     });
 
     target_sub.subscribe(function(message){
-        $('#target_card .h5').txt = message.data;
+        $('#target_card .h5').text(message.data);
     });
 }
 
