@@ -9,19 +9,19 @@ function initROS(){
         console.log('Connected to websocket server.');
         $('#connection_card').removeClass('border-left-danger').addClass('border-left-success');
         $('#connection_card .text-md').removeClass('text-danger').addClass('text-success');
-        $('#connection_card .h5').text('Connected');
+        $('#connection_card .h5').text('ON');
     });
     ros.on('error', function(error){
         console.log('Error connecting to websocket server: ', error);
         $('#connection_card').removeClass('border-left-success').addClass('border-left-danger');
         $('#connection_card .text-md').removeClass('text-success').addClass('text-danger');
-        $('#connection_card .h5').text('Error');
+        $('#connection_card .h5').text('ERROR');
     });
     ros.on('close',function(){
         console.log('Connection to websocket server closed.');
         $('#connection_card').removeClass('border-left-success').addClass('border-left-danger');
         $('#connection_card .text-md').removeClass('text-success').addClass('text-danger');
-        $('#connection_card .h5').text('Closed');
+        $('#connection_card .h5').text('OFF');
     });
 }
 
