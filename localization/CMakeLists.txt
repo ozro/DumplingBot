@@ -12,9 +12,11 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   geometry_msgs
+  message_generation
   nav_msgs
   apriltags
   tf
+  rasp
 )
 find_package(Eigen3 REQUIRED)
 ## System dependencies are found with CMake's conventions
@@ -56,7 +58,11 @@ find_package(Eigen3 REQUIRED)
 #   Message1.msg
 #   Message2.msg
 # )
-
+add_message_files(
+   FILES
+   EncoderCounts.msg
+#   Message2.msg
+)
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -76,7 +82,11 @@ find_package(Eigen3 REQUIRED)
 #   DEPENDENCIES
 #   std_msgs
 # )
-
+generate_messages(
+   DEPENDENCIES
+   std_msgs
+   geometry_msgs
+)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -111,6 +121,7 @@ catkin_package(
 #  LIBRARIES localization
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
+  CATKIN_DEPENDS message_runtime roscpp rospy std_msgs geometry_msgs
 )
 
 ###########
@@ -144,6 +155,9 @@ target_link_libraries(localization_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
 add_executable(localization_encoder src/localization_encoder.cpp)
 add_dependencies(localization_encoder ${catkin_EXPORTED_TARGETS})
 target_link_libraries(localization_encoder ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+add_executable(localize_visual src/localize_visual.cpp)
+add_dependencies(localize_visual ${catkin_EXPORTED_TARGETS})
+target_link_libraries(localize_visual ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h> 
 #include <geometry_msgs/Vector3.h> 
+#include <nav_msgs/Odometry.h>
 #include <eigen3/Eigen/Geometry>
 #include "planning/plan.h"
 #include <math.h>
@@ -32,11 +33,11 @@ class navigation{
   public:
     ros::Time last_message_received;
     void init(){
-      odom_sub = n_.subscribe("/odom",100,&navigation::odom_callback,this);
+      odom_sub = n_.subscribe("/odom",10,&navigation::odom_callback,this);
      // goal_sub = n_.subscribe("/",100,&navigation::odom_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
       plan_client = n_.serviceClient<planning::plan>("plan_path");
-      max_speed = 0.2;
+      max_speed = 0.4;
       max_speed_angular = 0.05;
       stop_distance = 0.5;
       cur_goal_index = 0;
@@ -45,13 +46,13 @@ class navigation{
       threshold_ang = 0.03;
 
       ros::NodeHandle n_private("~");
-      get_global_plan(2,29);
+      //get_global_plan(2,29);
 
 
     }
     ~navigation(){}
     void get_global_plan(int start, int goal);
-    void odom_callback(const geometry_msgs::Vector3::ConstPtr& message);
+    void odom_callback(const nav_msgs::Odometry::ConstPtr& message);
     void stop_motion();
 };
 void navigation::get_global_plan(int start, int goal){
@@ -72,15 +73,26 @@ void navigation::stop_motion(){
   geometry_msgs::Twist cmd;
   command_pub.publish(cmd);
 }
-void navigation::odom_callback(const geometry_msgs::Vector3::ConstPtr& odom_message){
-    if(! path.empty()){
-      cur_x = odom_message->x;
-      cur_y = odom_message->y;
-      cur_ang = odom_message->z;
-      
-      cur_goal_x = path[cur_goal_index].x;
-      cur_goal_y = path[cur_goal_index].y;
-      cur_goal_ang = path[cur_goal_index].z/180*3.14;
+void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message){
+  /*need ro change to navigate odom type*/
+
+
+    //if(! path.empty()){
+      cur_x = odom_message->pose.pose.position.x;
+      cur_y = odom_message->pose.pose.position.y;
+     // cur_ang = odom_message->z;
+      cur_ang = 0;
+
+      ROS_INFO("cur_x, %f",cur_x);
+    //  cur_goal_x = path[cur_goal_index].x;
+     // cur_goal_y = path[cur_goal_index].y;
+     // cur_goal_ang = path[cur_goal_index].z/180*3.14;
+
+      cur_goal_x = 0.3;
+      cur_goal_y = 0;
+      cur_goal_ang = 0;
+
+
 /*
       float del_x = cur_goal_x-cur_x;
       float del_y = cur_goal_y-cur_y;
@@ -97,14 +109,15 @@ void navigation::odom_callback(const geometry_msgs::Vector3::ConstPtr& odom_mess
         cur_goal_ang = path[cur_goal_index].z;
         ROS_INFO("reached one goal");
       }
-      if(cur_goal_index == path.size()){
+      
+      /*if(cur_goal_index == path.size()){
         geometry_msgs::Twist cmd;
         cmd.linear.x = 0;
         cmd.linear.y = 0;
         cmd.angular.z = 0;
         command_pub.publish(cmd);
         ros::Duration(1111).sleep();
-      }
+      }*/
       //ROS_INFO("%f, %f, %f", cur_goal_x,cur_goal_y,cur_goal_ang);
 
       int sign_x = 1;
@@ -200,8 +213,8 @@ void navigation::odom_callback(const geometry_msgs::Vector3::ConstPtr& odom_mess
       }
       }
       command_pub.publish(cmd);
-    }
-    last_message_received = ros::Time::now();
+    //}
+    this->last_message_received = ros::Time::now();
 
 }
 
@@ -213,11 +226,14 @@ int main(int argc, char **argv) {
     server.init();
     while(ros::ok()){
       //server.send_vel();
+      //ROS_INFO("aaaaaa");
       ros::spinOnce();
-      //ros::Duration(0.1).sleep();
+      ros::Duration(0.1).sleep();
       ros::Time current = ros::Time::now();
+
+      
       ros::Duration interval = current- server.last_message_received;
-      if(interval.toSec()>0.5){
+      if(interval.toSec()>100000000){
         server.stop_motion();
       }
     }

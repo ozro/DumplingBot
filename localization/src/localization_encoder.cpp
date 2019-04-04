@@ -5,6 +5,7 @@
 #include <geometry_msgs/PoseStamped.h> 
 #include <fstream>
 #include <std_msgs/Int16MultiArray.h>
+#include <rasp/EncoderCounts.h>
 #include <eigen3/Eigen/Geometry>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
@@ -16,7 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 double pi = 3.1415926535897932385;
-class localization{
+class localization_encoder{
   private:
     ros::NodeHandle n_;
     ros::Subscriber encoder_sub;
@@ -51,13 +52,13 @@ class localization{
   public:
     
     void init(){
-      encoder_sub = n_.subscribe("/encoder",100,&localization::encoder_callback,this);
+      encoder_sub = n_.subscribe("/motor_status/encoder_counts",100,&localization_encoder::encoder_callback,this);
       odom_pub = n_.advertise<nav_msgs::Odometry>("encoder_odom",10);
       ros::NodeHandle n_private("~");
-      base_width = 0.5;
-      base_length = 0.5;
-      wheel_gap = 0.0508;
-      wheel_setback = 0.041275;
+      base_width = 0.51;
+      base_length = 0.52;
+      wheel_gap = 0.057;
+      wheel_setback = 0.085;
       wheel_radius = 0.1016; 
       prev_FL = 0;
       prev_FR = 0;
@@ -69,22 +70,22 @@ class localization{
       last_time = ros::Time::now();
 
     }
-    ~localization(){}
-    void encoder_callback(const std_msgs::Int16MultiArray::ConstPtr& message);
+    ~localization_encoder(){}
+    void encoder_callback(const rasp::EncoderCounts::ConstPtr& message);
 };
 
-void localization::encoder_callback(const std_msgs::Int16MultiArray::ConstPtr& message){
+void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr& message){
   ros::Time current_time = ros::Time::now();
-  double DistancePerCount = (3.14159265 * wheel_radius*2) / 2626; 
-  double lengthBetweenTwoWheels = 0.25;
+  double DistancePerCount = (3.14159265 * wheel_radius) / 134.4; 
+  double lengthBetweenTwoWheels = base_length-2*wheel_setback;
   float DISTANCE_LEFT_TO_RIGHT_WHEEL = this->base_width +2*this->wheel_gap;
   float DISTANCE_FRONT_TO_REAR_WHEEL = this->base_length -2*this->wheel_setback;
   float WHEEL_SEPARATION_WIDTH = DISTANCE_LEFT_TO_RIGHT_WHEEL / 2;
   float WHEEL_SEPARATION_LENGTH = DISTANCE_FRONT_TO_REAR_WHEEL / 2;
-  int tick_FL = message->data[0];
-  int tick_FR = message->data[1];
-  int tick_BL = message->data[2];
-  int tick_BR = message->data[3];
+  int tick_FL = message->counts[2];
+  int tick_FR = -message->counts[1];
+  int tick_BL = message->counts[3];
+  int tick_BR = -message->counts[0];
   double dt = (current_time - last_time).toSec();
   //extract the wheel velocities from the tick signals count
   deltaFL = (tick_FL - prev_FL)*DistancePerCount/dt;
@@ -140,7 +141,7 @@ void localization::encoder_callback(const std_msgs::Int16MultiArray::ConstPtr& m
 int main(int argc, char **argv) {
      //Initializes ROS, and sets up a node
     ros::init(argc, argv,"localization");
-    localization server;
+    localization_encoder server;
     server.init();
     while(ros::ok()){
       ros::spinOnce();

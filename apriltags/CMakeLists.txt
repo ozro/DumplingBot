@@ -24,7 +24,7 @@ find_package(apriltagscpp REQUIRED)
 include(FindPkgConfig)
 pkg_check_modules(Yaml REQUIRED yaml-cpp)
 
-add_message_files(DIRECTORY msg FILES
+add_message_files(FILES
     AprilTagDetection.msg
     AprilTagDetections.msg
 )
@@ -41,6 +41,7 @@ catkin_package(
                  std_msgs
                  sensor_msgs
                  image_transport
+		 message_runtime
                  roscpp
                  geometry_msgs
 )

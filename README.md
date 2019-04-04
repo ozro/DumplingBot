@@ -1,5 +1,15 @@
 # DumplingBot
 
+## network setup
+On the Raspberry Pi
+```
+export ROS_MASTER_URI=http://jessyxie.wv.cc.cmu.edu:11311
+export ROS_IP=arcpi.wv.cc.cmu.edu
+```
+On Jessy's laptop
+```
+export ROS_IP=jessyxie.wv.cc.cmu.edu
+```
 ## apriltagslam package
 Install gstam:  
 >https://bitbucket.org/gtborg/gtsam/downloads/  

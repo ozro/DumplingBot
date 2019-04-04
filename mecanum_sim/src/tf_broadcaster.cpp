@@ -18,7 +18,7 @@ int main(int argc, char** argv)
    
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,0.0,-pi/2)), tf::Vector3(3.5, 0.5, 0.0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi/2)), tf::Vector3(1.0, 0.0, 0.645)),
         ros::Time::now(),"map", "tag13"));
     /*
     broadcaster.sendTransform(
@@ -38,12 +38,16 @@ int main(int argc, char** argv)
 
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,3*pi/4, 0.0)), tf::Vector3(0, 0, 0.5)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,0.0, 0.0)), tf::Vector3(0, 0, 0.645)),
         ros::Time::now(),"base_link", "usb_cam"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,0.0, -pi/2)), tf::Vector3(0, 0, 0)),
-        ros::Time::now(),"usb_cam", "optical"));
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,pi/2, 0.0)), tf::Vector3(0, 0, 0)),
+        ros::Time::now(),"usb_cam", "optical_fake"));
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(0.0,0.0, pi/2)), tf::Vector3(0, 0, 0)),
+        ros::Time::now(),"optical_fake", "optical"));
     
         
     r.sleep();
