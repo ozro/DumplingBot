@@ -25,10 +25,10 @@ var error_sub = new ROSLIB.Topic({
 error_sub.subscribe(function(message){
     var data = message.data[4];
     if(data == 0){
-        $('#openTray').removeClass("disabled");
+        $('#openTray').attr("disabled", false);
     }
     else{
-        $('#openTray').addClass("disabled");
+        $('#openTray').attr("disabled", true);
     }
 });
 

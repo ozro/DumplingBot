@@ -1,6 +1,12 @@
 //Item selection modal menu
 var counts = new Array(3).fill(0); 
 var table = 1;
+var jobs = [];
+
+updateItemMenu();
+updateTableMenu();
+updateJobs();
+
 $('#itemButton').click(function () {
     updateItemMenu();
 });
@@ -39,10 +45,10 @@ function updateItemMenu(){
     $("#itemButton .icecream").text(counts[2]);
 
     if(counts[0] != 0 || counts[1] != 0 || counts[2] !=0){
-        $("#add").removeClass("disabled");
+        $("#add").attr("disabled", false);
     }
     else{
-        $("#add").addClass("disabled");
+        $("#add").attr("disabled", true);
     }
 };
 
@@ -84,5 +90,50 @@ function updateTableMenu(){
 
 //Add job
 $('#add').click(function(){
+    jobs.push({table:table, counts:counts.slice()});
+    updateJobs();
     clearCounts();
+});
+
+//Remove job
+$('#remove').click(function(){
+    jobs.pop();
+    updateJobs();
+});
+
+//Clear jobs
+$('#clear').click(function(){
+    jobs = [];
+    updateJobs();
+});
+
+function updateJobs(){
+    if(jobs.length == 0){
+        $('#dest .empty').show();
+        $('#remove').attr('disabled', true);
+        $('#clear').attr('disabled', true);
+        $('#send').attr('disabled', true);
+    }
+    else{
+        $('#dest .empty').hide();
+        $('#remove').attr('disabled', false);
+        $('#clear').attr('disabled', false);
+        $('#send').attr('disabled', false);
+    }
+    var rows = "";
+    $.each(jobs, function(index, item){
+        var row = '<tr>';
+        row += '<td><h1><i class="fas fa-map-marker-alt"></i> ' + item.table + ' </h1></td>';
+        row += '<td><h1><i class="fas fa-pizza-slice"></i> ' + item.counts[0] + '</h1></td>';
+        row += '<td><h1><i class="fas fa-coffee"></i> ' + item.counts[1] + '</h1></td>';
+        row += '<td><h1><i class="fas fa-ice-cream"></i> ' + item.counts[2] + '</h1></td>';
+        rows += row;
+    });
+    $('#dest tbody').html(rows);
+    $('#confirmModal tbody').html(rows);
+};
+
+//Send robot
+$('#confirmed').click(function(){
+    trayVel.publish(closeVel);
 });

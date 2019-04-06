@@ -56,7 +56,7 @@
                 <!-- Content Row -->
                 <div class="row">
                   <!-- Connection card -->
-                  <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="col-xl-3 col-md-6">
                     <div id="connection_card" class="card border-left-danger shadow h-100 py-0">
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -71,7 +71,7 @@
                     </div>
                   </div>
                   <!-- Battery Card-->
-                  <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="col-xl-3 col-md-6">
                     <div id="battery_card" class="card border-left-success shadow h-100 py-0">
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -95,7 +95,7 @@
                     </div>
                   </div>
                   <!-- State Card -->
-                  <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="col-xl-3 col-md-6">
                     <div id="state_card" class="card border-left-primary shadow h-100 py-0">
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -110,7 +110,7 @@
                     </div>
                   </div>
                   <!-- Target Card -->
-                  <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="col-xl-3 col-md-6">
                     <div id="target_card" class="card border-left-info shadow h-100 py-0">
                       <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -126,12 +126,12 @@
                   </div>
 
                   <!-- Controls -->
-                  <div class="col-lg-12">
+                  <div class="col-lg-6 mt-4">
                     <button id="openTray" type="button" class="btn btn-primary btn-lg btn-block py-5" style="height:100%">
                       <h1>Open Tray</h1>
                     </button>
                   </div>
-                  <div class="col-lg-12 mt-2">
+                  <div class="col-lg-6 mt-4">
                     <button id="closeTray" type="button" class="btn btn-primary btn-lg btn-block py-5" style="height: 100%">
                       <h1>Close Tray</h1>
                     </button>
@@ -139,15 +139,28 @@
 
                   <!-- Call button-->
                   <div class="col-lg-12 mt-4">
-                    <button id="call" type="button" class="btn btn-secondary btn-lg btn-block py-5" style="height: 100%">
-                      <h1><i class="fas fa-exclamation-circle"></i> Call Waiter</h1>
+                    <button id="call" type="button" class="btn btn-info btn-lg btn-block py-5" style="height: 100%">
+                      <h1><i class="fas fa-exclamation-circle"></i> Help</h1>
                     </button>
                   </div>
 
+                  <!-- Done button-->
+                  <div class="col-lg-12 mt-4">
+                    <button id="done" type="button" class="btn btn-success btn-lg btn-block py-5" style="height: 100%">
+                      <h1>Done</h1>
+                    </button>
+                  </div>
                 </div>
               </div>
               <!-- Right content column -->
               <div class="col-lg-6 mt-2">
+                <div class="row">
+                  <div class="col-lg-12 mb-4">
+                    <button id="estop" type="button" class="btn btn-danger btn-lg btn-block py-3" style="height: 100%">
+                      <h1>Emergency Stop</h1>
+                    </button>
+                  </div>
+                </div>
                 <div class="row">
                   <!-- Food Card -->
                   <div class="col-lg-12">
@@ -177,12 +190,6 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Done button-->
-                  <div class="col-lg-12 mt-4">
-                    <button id="done" type="button" class="btn btn-success btn-lg btn-block py-5" style="height: 100%">
-                      <h1>Done</h1>
-                    </button>
                   </div>
                 </div>
               </div>
@@ -218,5 +225,6 @@
 
     <script src="js/rosbridge.js"></script>
     <script src="js/trayControl.js"></script>
+    <script src="js/delivery.js"></script>
   </body>
 </html>
