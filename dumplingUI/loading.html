@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>DumplingBot Dashboard</title>
+    <title>DumplingBot Loading Interface</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Dashboard for Dumplingbot">
+    <meta name="description" content="Interface for Dumplingbot">
     <meta name="author" content="Oliver Zhang">
 
     <!-- Bootstrap CSS -->
@@ -51,6 +51,174 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <div class="row">
+              <!-- Left Content Column -->
+              <div class="col-lg-6 mb-4 mt-2">
+                <!-- Content Row -->
+                <div class="row">
+                  <!-- Connection card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="connection_card" class="card border-left-danger shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-danger text-uppercase mb-1">ROS-Bridge</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
+                          </div>
+                          <div class="col-auto">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Battery Card-->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="battery_card" class="card border-left-success shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-success text-uppercase mb-1">Battery</div>
+                            <div class="row no-gutters align-items-center">
+                              <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0 %</div>
+                              </div>
+                              <div class="col">
+                                <!-- <div class="progress progress-sm mr-2 mt-2"></div>
+                                  <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- State Card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="state_card" class="card border-left-primary shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-primary text-uppercase mb-1">State</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
+                          </div>
+                          <div class="col-auto">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Target Card -->
+                  <div class="col-xl-3 col-md-6 mb-4">
+                    <div id="target_card" class="card border-left-info shadow h-100 py-0">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-md font-weight-bold text-info text-uppercase mb-1">Target</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">NULL</div>
+                          </div>
+                          <div class="col-auto">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Controls -->
+                  <div class="col-lg-12">
+                    <button id="openTray" type="button" class="btn btn-primary btn-lg btn-block py-5" style="height:100%">
+                      <h1>Open Tray</h1>
+                    </button>
+                  </div>
+                  <div class="col-lg-12 mt-2">
+                    <button id="closeTray" type="button" class="btn btn-primary btn-lg btn-block py-5" style="height: 100%">
+                      <h1>Close Tray</h1>
+                    </button>
+                  </div>
+                  <div class="col-lg-6 mt-2">
+                    <button id="itemButton" type="button" class="btn btn-secondary btn-lg btn-block py-5" data-toggle="modal" data-target="#itemModal" style="height: 100%">
+                      <h1><span class="pizza">0</span> <i class="fas fa-pizza-slice"></i>
+                       <span class="coffee">0</span> <i class="fas fa-coffee"></i>
+                       <span class="icecream">0</span> <i class="fas fa-ice-cream"></i></h1>
+                    </button>
+                  </div>
+                  <div id="tableButton" class="col-lg-6 mt-2">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block py-5" data-toggle="modal" data-target="#tableModal" style="height: 100%">
+                      <h1><i class="fas fa-map-marker-alt"></i> <span>1</span></h1>
+                    </button>
+                  </div>
+                  <div class="col-lg-12 mt-2">
+                    <button id="add" type="button" class="btn btn-success btn-lg btn-block py-5 disabled" style="height: 100%">
+                      <h1>Add Job</h1>
+                    </button>
+                  </div>
+                  <div class="col-lg-6 mt-2">
+                    <button id="remove" type="button" class="btn btn-danger btn-lg btn-block py-5" style="height: 100%">
+                      <h1>Remove Last</h1>
+                    </button>
+                  </div>
+                  <div class="col-lg-6 mt-2">
+                    <button id="clear" type="button" class="btn btn-danger btn-lg btn-block py-5" style="height: 100%">
+                      <h1>Clear All</h1>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Right content column -->
+              <div class="col-lg-6 mb-4 mt-2">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <!-- Destinations Card -->
+                    <div id="dest" class="card shadow mb-4">
+                      <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Destinations
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                         <table class="table table-striped">
+                          <tbody>
+                            <tr>
+                              <td><h1>1</h1></td>
+                              <td><h1>0 <i class="fas fa-pizza-slice"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-coffee"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-ice-cream"></i></h1></td>
+                            </tr>
+                            <tr>
+                              <td><h1>2</h1></td>
+                              <td><h1>0 <i class="fas fa-pizza-slice"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-coffee"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-ice-cream"></i></h1></td>
+                            </tr>
+                            <tr>
+                              <td><h1>3</h1></td>
+                              <td><h1>0 <i class="fas fa-pizza-slice"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-coffee"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-ice-cream"></i></h1></td>
+                            </tr>
+                            <tr>
+                              <td><h1>4</h1></td>
+                              <td><h1>0 <i class="fas fa-pizza-slice"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-coffee"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-ice-cream"></i></h1></td>
+                            </tr>
+                            <tr>
+                              <td><h1>5</h1></td>
+                              <td><h1>0 <i class="fas fa-pizza-slice"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-coffee"></i></h1></td>
+                              <td><h1>0 <i class="fas fa-ice-cream"></i></h1></td>
+                            </tr>
+                          </tbody>
+                        </table> 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 mt-2">
+                    <button id="send" type="button" class="btn btn-success btn-lg btn-block py-5" data-toggle="modal" data-target="#confirmModal" style="height: 100%">
+                      <h1>Send Robot</h1>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <!-- /.container-fluid -->
@@ -59,7 +227,106 @@
         <!-- End of Main Content -->
       </div>
       <!-- End of Content Wrapper -->
+      <!-- Modals -->
+        <div class="modal fade" id="itemModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Item Selection</h5>
 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <button type="button" class="pizza btn btn-primary btn-lg btn-block my-2 py-3">
+                        <h1><i class="fas fa-pizza-slice fa-3x"></i></h1>
+                        <h1><i class="fas fa-times"></i> <b>0</b></h1>
+                      </button>
+                    </div>
+                    <div class="col-lg-4">
+                      <button type="button" class="coffee btn btn-primary btn-lg btn-block my-2 py-3">
+                        <h1><i class="fas fa-coffee fa-3x"></i></h1>
+                        <h1><i class="fas fa-times"></i> <b>0</b></h1>
+                      </button>
+                    </div>
+                    <div class="col-lg-4">
+                      <button type="button" class="icecream btn btn-primary btn-lg btn-block my-2 py-3">
+                        <h1><i class="fas fa-ice-cream fa-3x"></i></h1>
+                        <h1><i class="fas fa-times"></i> <b>0</b></h1>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="clear btn btn-lg btn-danger">Clear</button>
+                  <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="tableModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Table Selection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <button id="t1" type="button" class="btn btn-primary btn-lg btn-block my-2 py-5" data-dismiss="modal">
+                        <h1>1</h1>
+                      </button>
+                      <button id="t2" type="button" class="btn btn-primary btn-lg btn-block my-2 py-5" data-dismiss="modal">
+                        <h1>2</h1>
+                      </button>
+                    </div>
+                    <div class="col-lg-4">
+                      <button id="t3" type="button" class="btn btn-primary btn-lg btn-block my-2 py-5" data-dismiss="modal">
+                        <h1>3</h1>
+                      </button>
+                      <button id="t4" type="button" class="btn btn-primary btn-lg btn-block my-2 py-5" data-dismiss="modal">
+                        <h1>4</h1>
+                      </button>
+                    </div>
+                    <div class="col-lg-4 align-self-center">
+                      <button id="t5" type="button" class="btn btn-primary btn-lg btn-block my-2 py-5" data-dismiss="modal">
+                        <h1>5</h1>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h1>Confirm to send the robot.</h1>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Cancel</button>
+                  <button id="confirmed" type="button" class="btn btn-lg btn-primary" data-dismiss="modal">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     <!-- End of Page Wrapper -->
     
@@ -80,7 +347,9 @@
 
     <script src="js/roslib.min.js"></script>
     <script src="js/eventemitter2.min.js"></script>
-    <script src="js/keyboardteleop.min.js"></script>
-    <script src="js/webui.js"></script>
+
+    <script src="js/rosbridge.js"></script>
+    <script src="js/trayControl.js"></script>
+    <script src="js/loading.js"></script>
   </body>
 </html>

@@ -32,12 +32,12 @@
             <span>Dashboard</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="delivery.html">
             <i class="fas fa-5x fa-utensils"></i>
             <span>Delivery</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="loading.html">
             <i class="fas fa-truck-loading"></i>
             <span>Loading</span></a>
         </li>
@@ -54,7 +54,7 @@
               <!-- Motor Content Column -->
               <div class="col-lg-6 mb-4">
                 <!-- Content Row -->
-                <div class="row">
+                <div class="row mt-2">
                   <!-- Connection card -->
                   <div class="col-xl-3 col-md-6 mb-4">
                     <div id="connection_card" class="card border-left-danger shadow h-100 py-0">
@@ -289,7 +289,7 @@
                                   <div class="target">
                                     <h4 class="small">Target <span class="speed float-right">0</span></h4>
                                     <div class="progress mb-4">
-                                      <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                   </div>
                                   <div class="actual">
@@ -311,8 +311,8 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-lg-12 mb-2">
-                        <div id="motor_status_4" class="card shadow mb-2">
+                      <div class="col-lg-12">
+                        <div id="motor_status_4" class="card shadow">
                           <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Receptacle Motor</h6>
                           </div>
@@ -322,7 +322,7 @@
                                 <div class="col-lg-6">
                                   <div class="target">
                                     <h4 class="small">Target <span class="speed float-right">0</span></h4>
-                                    <div class="progress mb-4">
+                                    <div class="progress mb-2">
                                       <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                   </div>
@@ -330,7 +330,7 @@
                                 <div class="col-lg-6">
                                   <div class="actual">
                                     <h4 class="small">Actual <span class="speed float-right">0</span></h4>
-                                    <div class="progress mb-4">
+                                    <div class="progress mb-2">
                                       <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                   </div>
@@ -350,7 +350,6 @@
                                   <span class="volt">0</span> &deg;C
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         </div>
@@ -360,7 +359,7 @@
                 </div>
               </div>
             
-              <div class="col-lg-6 mb-4">
+              <div class="col-lg-6 mt-2">
                   <!-- Camera -->
                   <div id="camera" class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -373,7 +372,7 @@
                     </div>
                   </div>
                   <!-- Map -->
-                  <div id="map" class="card shadow mb-4">
+                  <!-- <div id="map" class="card shadow mb-4">
                     <div class="card-header py-3">
                       <h6 class="m-0 font-weight-bold text-primary">Map</h6>
                     </div>
@@ -382,7 +381,7 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 50rem;" src="">
                       </div>
                     </div>
-                  </div>
+                  </div> -->
               </div>
             </div>
 
@@ -414,7 +413,8 @@
 
     <script src="js/roslib.min.js"></script>
     <script src="js/eventemitter2.min.js"></script>
-    <script src="js/keyboardteleop.min.js"></script>
+
+    <script src="js/rosbridge.js"></script>
     <script src="js/dashboard.js"></script>
   </body>
 </html>

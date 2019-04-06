@@ -1,4 +1,3 @@
-var robot_IP = "localhost";
 var camera_topic = "/usb_cam/image_raw";
 var map_topic = "/usb_cam/image_raw";
 var error_topic = "/motor_status/errors";
@@ -12,48 +11,13 @@ var enc_topic = "/motor_status/encoder_counts";
 var target_topic = "/target";
 var state_topic = "/state";
 
-var ros;
-// Initialize ROS connection
-function initROS(){
-    ros = new ROSLIB.Ros({url:"ws://" + robot_IP + ':9090'});
-    ros.on('connection', function(){
-        console.log('Connected to websocket server.');
-        $('#connection_card').removeClass('border-left-danger').addClass('border-left-success');
-        $('#connection_card .text-md').removeClass('text-danger').addClass('text-success');
-        $('#connection_card .h5').text('Connected');
-    });
-    ros.on('error', function(error){
-        console.log('Error connecting to websocket server: ', error);
-        $('#connection_card').removeClass('border-left-success').addClass('border-left-danger');
-        $('#connection_card .text-md').removeClass('text-success').addClass('text-danger');
-        $('#connection_card .h5').text('Error');
-    });
-    ros.on('close',function(){
-        console.log('Connection to websocket server closed.');
-        $('#connection_card').removeClass('border-left-success').addClass('border-left-danger');
-        $('#connection_card .text-md').removeClass('text-success').addClass('text-danger');
-        $('#connection_card .h5').text('Closed');
-    });
-}
-
 function initVideo(){
     $('#camera .text-primary').text("Feed: " + camera_topic);
     video = $('#camera img')[0];
     video.src = "http://" + robot_IP + ":8080/stream?topic=" + camera_topic + "&type=mjpeg&quality=80";
-
-//     $('#map .text-primary').text("Feed: " + map_topic);
-//     video = $('#map img')[0];
-//     video.src = "http://" + robot_IP + ":8080/stream?topic=" + map_topic + "&type=mjpeg&quality=80";
 }
 
 function initNodes(){
-//    // Publishers
-//    var trayVel = new ROSLIB.Topic({
-//        ros:ros,
-//        name:'/tray_vel',
-//        messageType: 'std_msgs/Float32'
-//    });
-
     // Subscribers
     var error_sub = new ROSLIB.Topic({
         ros:ros,
@@ -63,7 +27,6 @@ function initNodes(){
 
     error_sub.subscribe(function(message){
         var len = message.data.length;
-        console.log("Received +");
         for (var i = 0; i < len; i++){
             var data = message.data[i];
             switch(data){
@@ -73,7 +36,6 @@ function initNodes(){
                     break;
                 case 1:
                     msg = "Stopped";
-                    $('#motor_status_'+i+" .progress-bar").removeClass('bg-danger').removeClass('bg-primary').addClass('bg-warning');
                     break;
                 default:
                     msg = "Error";
@@ -221,7 +183,6 @@ function initNodes(){
 
 // Window initialization
 window.onload = function () {
-    initROS()
     initNodes()
     initVideo()
 }
