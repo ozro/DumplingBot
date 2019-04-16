@@ -52,7 +52,7 @@ class localization_encoder{
   public:
     
     void init(){
-      encoder_sub = n_.subscribe("/motor_status/encoder_counts",100,&localization_encoder::encoder_callback,this);
+      encoder_sub = n_.subscribe("/motor_status/encoder_counts",10,&localization_encoder::encoder_callback,this);
       odom_pub = n_.advertise<nav_msgs::Odometry>("encoder_odom",10);
       ros::NodeHandle n_private("~");
       base_width = 0.51;
@@ -102,7 +102,7 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   double delta_x =  vx * dt;
   double delta_y =  vy * dt;
   double delta_th = vth * dt;
-  ROS_INFO("dx: %f",delta_x);
+  //ROS_INFO("dx: %f",delta_x);
   x += delta_x;
   y += delta_y;
   th += delta_th;
@@ -112,7 +112,7 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   //Odometry message
   nav_msgs::Odometry odom;
   odom.header.stamp = current_time;
-  odom.header.frame_id = "odom";
+  odom.header.frame_id = "map";
 
   //set the position
   odom.pose.pose.position.x = x;
@@ -125,6 +125,12 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   odom.twist.twist.linear.x = vx;
   odom.twist.twist.linear.y = vy;
   odom.twist.twist.angular.z = vth;
+  odom.pose.covariance[0]  = 0.01;
+  odom.pose.covariance[7]  = 0.01;
+  odom.pose.covariance[14] = 99999;
+  odom.pose.covariance[21] = 99999;
+  odom.pose.covariance[28] = 99999;
+  odom.pose.covariance[35] = 0.01;
 
   //publish the message
   odom_pub.publish(odom);
@@ -140,7 +146,7 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
 
 int main(int argc, char **argv) {
      //Initializes ROS, and sets up a node
-    ros::init(argc, argv,"localization");
+    ros::init(argc, argv,"localization_encoder");
     localization_encoder server;
     server.init();
     while(ros::ok()){

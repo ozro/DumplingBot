@@ -2,6 +2,9 @@
 #include <geometry_msgs/Twist.h> 
 #include <geometry_msgs/Vector3.h> 
 #include <nav_msgs/Odometry.h>
+#include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_datatypes.h>
 #include <eigen3/Eigen/Geometry>
 #include "planning/plan.h"
 #include <math.h>
@@ -37,13 +40,13 @@ class navigation{
      // goal_sub = n_.subscribe("/",100,&navigation::odom_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
       plan_client = n_.serviceClient<planning::plan>("plan_path");
-      max_speed = 0.4;
+      max_speed = 0.2;
       max_speed_angular = 0.05;
       stop_distance = 0.5;
       cur_goal_index = 0;
-      threshold_x = 0.05;
-      threshold_y = 0.05;
-      threshold_ang = 0.03;
+      threshold_x = 0.1;
+      threshold_y = 0.1;
+      threshold_ang = 0.1;
 
       ros::NodeHandle n_private("~");
       //get_global_plan(2,29);
@@ -80,17 +83,28 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
     //if(! path.empty()){
       cur_x = odom_message->pose.pose.position.x;
       cur_y = odom_message->pose.pose.position.y;
+      tf::Quaternion q(
+          odom_message->pose.pose.orientation.x,
+          odom_message->pose.pose.orientation.y,
+          odom_message->pose.pose.orientation.z,
+          odom_message->pose.pose.orientation.w);
+      tf::Matrix3x3 m(q);
+      double roll, pitch, yaw;
+      m.getRPY(roll, pitch, yaw);
+
      // cur_ang = odom_message->z;
-      cur_ang = 0;
+      cur_ang = yaw;
 
       ROS_INFO("cur_x, %f",cur_x);
+      ROS_INFO("cur_y, %f",cur_y);
+      ROS_INFO("cur_yaw, %f",yaw);
     //  cur_goal_x = path[cur_goal_index].x;
      // cur_goal_y = path[cur_goal_index].y;
      // cur_goal_ang = path[cur_goal_index].z/180*3.14;
 
-      cur_goal_x = 0.3;
-      cur_goal_y = 0;
-      cur_goal_ang = 0;
+      cur_goal_x = 1.55;
+      cur_goal_y = 0.12;
+      cur_goal_ang = 1;
 
 
 /*
@@ -101,6 +115,8 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
       float x_dist = dist*cos(del_ang);
       float y_dist = dist*sin(del_ang);*/
       //ROS_INFO("%f, %f, %f", x_dist,y_dist,del_ang);
+
+      /*
       if(fabs(cur_x-cur_goal_x)<threshold_x && fabs(cur_y-cur_goal_y)<threshold_y && fabs(cur_ang-cur_goal_ang)<threshold_ang
          && cur_goal_index<path.size()){
         cur_goal_index += 1;
@@ -108,7 +124,7 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
         cur_goal_y = path[cur_goal_index].y;
         cur_goal_ang = path[cur_goal_index].z;
         ROS_INFO("reached one goal");
-      }
+      }*/
       
       /*if(cur_goal_index == path.size()){
         geometry_msgs::Twist cmd;
@@ -134,7 +150,7 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
         //need to subscribe to current speed!!!!!!!!!
         cmd.linear.x = sign_x*max_speed;
       }else{
-        cmd.linear.x = sign_x*max_speed*fabs(cur_goal_x-cur_x)/stop_distance;
+        cmd.linear.x = sign_x*(max_speed*fabs(cur_goal_x-cur_x)/stop_distance+0.3);
       }
       if(fabs(cur_x-cur_goal_x) <threshold_x){
         cmd.linear.x =0;
@@ -148,70 +164,32 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
         //need to subscribe to current speed!!!!!!!!!
         cmd.linear.y = sign_y*max_speed;
       }else{
-        cmd.linear.y = sign_y*max_speed*fabs(cur_goal_y-cur_y)/stop_distance;
+        cmd.linear.y = sign_y*(max_speed*fabs(cur_goal_y-cur_y)/stop_distance+0.6);
       }
       if(fabs(cur_y-cur_goal_y) <threshold_y){
         cmd.linear.y =0;
       }
       if (cur_goal_ang - cur_ang >0){
-        sign_ang = 1;
-      }else{
         sign_ang = -1;
+      }else{
+        sign_ang = 1;
       }
       if(fabs(cur_ang-cur_goal_ang) > 1){
         //need to subscribe to current speed!!!!!!!!!
-        cmd.angular.z = 0.2*sign_ang;
+        cmd.angular.z = 0.4*sign_ang;
       }else{
-        cmd.angular.z = 0.1*sign_ang;
+        cmd.angular.z = sign_ang*(0.4*fabs(cur_goal_ang-cur_ang)/1+0.2);
       }
       if(fabs(cur_ang-cur_goal_ang) <threshold_ang){
         cmd.angular.z =0;
       }
-      ///////////////////////////////aaaaaaaaaaaaaaaaaaaaaaaaaaa need to change
-      if(cur_ang >1.54){
-        if (cur_goal_x - cur_x >0){
-        sign_x = -1;
-      }else{
-        sign_x = 1;
-      }
-      if(fabs(cur_x-cur_goal_x) > stop_distance){
-        //need to subscribe to current speed!!!!!!!!!
-        cmd.linear.y = sign_x*max_speed;
-      }else{
-        cmd.linear.y = sign_x*max_speed*fabs(cur_goal_x-cur_x)/stop_distance;
-      }
-      if(fabs(cur_x-cur_goal_x) <threshold_x){
-        cmd.linear.y =0;
-      }
-      if (cur_goal_y - cur_y >0){
-        sign_y = 1;
-      }else{
-        sign_y = -1;
-      }
-      if(fabs(cur_y-cur_goal_y) > stop_distance){
-        //need to subscribe to current speed!!!!!!!!!
-        cmd.linear.x = sign_y*max_speed;
-      }else{
-        cmd.linear.x = sign_y*max_speed*fabs(cur_goal_y-cur_y)/stop_distance;
-      }
-      if(fabs(cur_y-cur_goal_y) <threshold_y){
-        cmd.linear.x =0;
-      }
-      if (cur_goal_ang - cur_ang >0){
-        sign_ang = 1;
-      }else{
-        sign_ang = -1;
-      }
-      if(fabs(cur_ang-cur_goal_ang) > 1){
-        //need to subscribe to current speed!!!!!!!!!
-        cmd.angular.z = 0.2*sign_ang;
-      }else{
-        cmd.angular.z = 0.1*sign_ang;
-      }
-      if(fabs(cur_ang-cur_goal_ang) <threshold_ang){
-        cmd.angular.z =0;
-      }
-      }
+      ROS_INFO("x speed, %f",cmd.linear.x);
+      ROS_INFO("y speed, %f",cmd.linear.y);
+      ROS_INFO("yaw speed, %f",cmd.angular.z);
+      //cmd.linear.x = 0;
+      //cmd.linear.y = 0;
+      //cmd.angular.z = 0;
+
       command_pub.publish(cmd);
     //}
     this->last_message_received = ros::Time::now();

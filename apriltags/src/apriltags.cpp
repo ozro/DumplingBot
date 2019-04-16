@@ -430,7 +430,7 @@ void ImageCallback(const sensor_msgs::ImageConstPtr& msg)
             }
         }
     }
-    marker_publisher_.publish(marker_transforms);
+    //marker_publisher_.publish(marker_transforms);
     apriltag_publisher_.publish(apriltag_detections);
 
     if(publish_detections_image_)
@@ -534,9 +534,9 @@ void SetupPublisher()
     ros::SubscriberStatusCallback disconnect_callback = &DisconnectCallback;
     
     // Publisher
-    marker_publisher_ = node_->advertise<visualization_msgs::MarkerArray>(
+    /*marker_publisher_ = node_->advertise<visualization_msgs::MarkerArray>(
             DEFAULT_MARKER_TOPIC, 1, connect_callback,
-            disconnect_callback);
+            disconnect_callback);*/
     apriltag_publisher_ = node_->advertise<apriltags::AprilTagDetections>(
             DEFAULT_DETECTIONS_TOPIC, 1, connect_callback, disconnect_callback);
 

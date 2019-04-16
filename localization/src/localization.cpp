@@ -31,30 +31,23 @@ class localization{
     float cur_px;
     float cur_py;
     float cur_pz;
-    float del_x;
-    float del_y;
-    float tag_x;
-    float tag_y;
-    float dist;
-    float update_x;
-    float update_y;
-    float update_angle;
-    bool updated;
+  
   public:
     
     void init(){
-      april_detection = n_.subscribe("/apriltags/detections",100,&localization::detection_callback,this);
+      april_detection = n_.subscribe("/apriltags/detections",5,&localization::detection_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
       odom_pub = n_.advertise<nav_msgs::Odometry>("vo_odom",10);
       ros::NodeHandle n_private("~");
-      initialize_map();
+      //initialize_map();
 
     }
     ~localization(){}
-    void send_vel(geometry_msgs::Twist cmd,int t);
-    void initialize_map();
+    //void send_vel(geometry_msgs::Twist cmd,int t);
+    //void initialize_map();
     void detection_callback(const apriltags::AprilTagDetections::ConstPtr& detections);
 };
+/*
 void localization::initialize_map(){
   std::ifstream infile("/home/jessyxie/dumpling_ws/src/localization/include/localization/map.csv");
   while(infile){
@@ -73,54 +66,73 @@ void localization::initialize_map(){
   }
 
 }
+*/
+int Find_biggest_tag(const apriltags::AprilTagDetections::ConstPtr& message){
+    int biggest = 0;
+    int return_idex;
+    int area;
+    int x1,x2,x3,x4;
+    int y1,y2,y3,y4;
+    for(int i = 0; i <message->detections.size(); i ++){
+        x1 = message->detections[i].corners2d[0].x;
+        y1 = message->detections[i].corners2d[0].y;
+        x2 = message->detections[i].corners2d[1].x;
+        y2 = message->detections[i].corners2d[1].y;
+        x3 = message->detections[i].corners2d[2].x;
+        y3 = message->detections[i].corners2d[2].y;
+        x4 = message->detections[i].corners2d[3].x;
+        y4 = message->detections[i].corners2d[3].y;
+        area = abs((x1*y2-y1*x2+x2*y3-y2*x3+x3*y4-y3*x4+x4*y1-y4*x1)/2);
+        if(area > biggest){
+            biggest = area;
+            return_idex = i;
+        }
+    }
+    return return_idex;
+
+}
 
 void localization::detection_callback(const apriltags::AprilTagDetections::ConstPtr& message){
   if(message->detections.size()>0){
-    int id = message->detections[0].id;
+    //int id = message->detections[0].id;
+    int index = Find_biggest_tag(message);
+    int id = message->detections[index].id;
     std::string tag_name;
+    //ROS_INFO("biggest index %d", index);
+    //ROS_INFO("biggest id %d", id);
     
-    if (id ==5){
-      tag_name = "tag5";
+    if (id ==0){tag_name = "tag0";}
+    else if (id ==1){tag_name = "tag1";}
+    else if (id ==2){tag_name = "tag2";}
+    else if (id ==3){tag_name = "tag3";}
+    else if (id ==4){tag_name = "tag4";}
+    else if (id ==5){tag_name = "tag5";}
+    else if (id ==6){tag_name = "tag6";}
+    else if (id ==7){tag_name = "tag7";}
+    else if (id ==8){tag_name = "tag8";}
+    else if (id ==9){tag_name = "tag9";}
+    else if (id ==10){tag_name = "tag10";}
+    else if (id ==11){tag_name = "tag11";}
+    else if (id ==12){tag_name = "tag12";}
+    else if (id ==13){tag_name = "tag13";}
+    else if (id ==14){tag_name = "tag14";}
+    else if (id ==15){tag_name = "tag15";}
+    else if (id ==16){tag_name = "tag16";}
+    else if (id ==17){tag_name = "tag17";}
+    else if (id ==18){tag_name = "tag18";}
+    else if (id ==19){tag_name = "tag19";}
+    else if (id ==20){tag_name = "tag20";}
+    else{
+        tag_name = "Unknown";
     }
-    if (id ==13){
-      tag_name = "tag13";
-    }
-    if (id ==9){
-      tag_name = "tag9";
-    }
-    if (id ==12){
-      tag_name = "tag12";
-    }
-    if (id ==11){
-      tag_name = "tag11";
-    }
-    float tag_x = this->map[id][1];
-    float tag_y = this->map[id][2];
-    float tag_z = this->map[id][3];
-    float tag_ox = this->map[id][4];
-    float tag_oy = this->map[id][5];
-    float tag_oz = this->map[id][6];
-    float tag_ow = this->map[id][7];
-    ROS_INFO("aaaaaaaaaaaaaaaaaaaaa%i,%f,%f,%f,%f,%f,%f,%f",id,tag_x,tag_y,tag_z,tag_ox,tag_oy,tag_oz,tag_ow);
-    /*
-    broadcaster.sendTransform(
-      tf::StampedTransform(
-        tf::Transform(tf::Quaternion(0,0,0,1), tf::Vector3(tag_x,tag_y, tag_z)),
-        ros::Time::now(),"map", "test_tag"));
-    broadcaster.sendTransform(
-      tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(3/4*pi,0.0,0.0)), tf::Vector3(0,0, 0)),
-        ros::Time::now(),"test_tag", "test_tag1"));*/
-    ROS_INFO("x:%f",message->detections[0].pose.position.x);
-    ROS_INFO("y:%f",message->detections[0].pose.position.y);
-    ROS_INFO("z:%f",message->detections[0].pose.position.z);
-    cur_px = message->detections[0].pose.position.x;
-    cur_py = message->detections[0].pose.position.y;
-    cur_pz = message->detections[0].pose.position.z;
-    cur_q.x() = message->detections[0].pose.orientation.x;
-    cur_q.y() = message->detections[0].pose.orientation.y;
-    cur_q.z() = message->detections[0].pose.orientation.z;
-    cur_q.w() = message->detections[0].pose.orientation.w;
+
+    cur_px = message->detections[index].pose.position.x;
+    cur_py = message->detections[index].pose.position.y;
+    cur_pz = message->detections[index].pose.position.z;
+    cur_q.x() = message->detections[index].pose.orientation.x;
+    cur_q.y() = message->detections[index].pose.orientation.y;
+    cur_q.z() = message->detections[index].pose.orientation.z;
+    cur_q.w() = message->detections[index].pose.orientation.w;
     geometry_msgs::PoseStamped vec;
     geometry_msgs::PoseStamped vec_out;
     vec.header.frame_id = "optical";
@@ -134,7 +146,7 @@ void localization::detection_callback(const apriltags::AprilTagDetections::Const
     
     listener.transformPose("base_link", vec, vec_out);
 
-    ROS_INFO("tf: %f, %f, %f", vec_out.pose.position.x,vec_out.pose.position.y,vec_out.pose.position.z);
+    //ROS_INFO("tf: %f, %f, %f", vec_out.pose.position.x,vec_out.pose.position.y,vec_out.pose.position.z);
     float ox = vec_out.pose.orientation.x;
     float oy = vec_out.pose.orientation.y;
     float oz = vec_out.pose.orientation.z;
@@ -143,6 +155,7 @@ void localization::detection_callback(const apriltags::AprilTagDetections::Const
   
     double roll, pitch, yaw;
     tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+    //ROS_INFO("tf: %f", yaw);
     tf::Transform tag_in_base = tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(roll,pitch,yaw)), tf::Vector3(vec_out.pose.position.x, vec_out.pose.position.y, vec_out.pose.position.z));
     tf::StampedTransform base_in_tag(tag_in_base.inverse(),ros::Time::now(),tag_name,"base_link");
     broadcaster.sendTransform(tf::StampedTransform(base_in_tag,ros::Time::now(),tag_name,"base_link"));    
@@ -159,7 +172,7 @@ int main(int argc, char **argv) {
     while(ros::ok()){
       //server.localize();
       ros::spinOnce();
-      ros::Duration(0.1).sleep();
+      ros::Duration(0.01).sleep();
 
     }
     return 0;

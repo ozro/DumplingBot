@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   nav_msgs
+  tf
   apriltags
 )
 find_package(Eigen3 REQUIRED)
@@ -140,6 +141,9 @@ include_directories(
 add_executable(navigation_node src/navigation.cpp)
 add_dependencies(navigation_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} )
 target_link_libraries(navigation_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+add_executable(navigation_test_node src/navigation_test.cpp)
+add_dependencies(navigation_test_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} )
+target_link_libraries(navigation_test_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
