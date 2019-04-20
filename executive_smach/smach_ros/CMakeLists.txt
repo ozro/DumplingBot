@@ -8,7 +8,13 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
 )
-
+add_message_files(
+   DIRECTORY
+   msg
+   FILES
+   robot_state.msg
+#   Message2.msg
+)
 #catkin_python_setup()
 add_service_files(
    DIRECTORY
