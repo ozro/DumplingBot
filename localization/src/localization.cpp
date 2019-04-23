@@ -35,7 +35,7 @@ class localization{
   public:
     
     void init(){
-      april_detection = n_.subscribe("/apriltags/detections",5,&localization::detection_callback,this);
+      april_detection = n_.subscribe("/apriltags/detections1",5,&localization::detection_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
       odom_pub = n_.advertise<nav_msgs::Odometry>("vo_odom",10);
       ros::NodeHandle n_private("~");
@@ -144,7 +144,7 @@ void localization::detection_callback(const apriltags::AprilTagDetections::Const
     vec.pose.orientation.z = cur_q.z();
     vec.pose.orientation.w = cur_q.w();
     
-    listener.transformPose("base_link", vec, vec_out);
+    listener.transformPose("base_link_visual", vec, vec_out);
 
     //ROS_INFO("tf: %f, %f, %f", vec_out.pose.position.x,vec_out.pose.position.y,vec_out.pose.position.z);
     float ox = vec_out.pose.orientation.x;
@@ -157,8 +157,8 @@ void localization::detection_callback(const apriltags::AprilTagDetections::Const
     tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
     //ROS_INFO("tf: %f", yaw);
     tf::Transform tag_in_base = tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(roll,pitch,yaw)), tf::Vector3(vec_out.pose.position.x, vec_out.pose.position.y, vec_out.pose.position.z));
-    tf::StampedTransform base_in_tag(tag_in_base.inverse(),ros::Time::now(),tag_name,"base_link");
-    broadcaster.sendTransform(tf::StampedTransform(base_in_tag,ros::Time::now(),tag_name,"base_link"));    
+    tf::StampedTransform base_in_tag(tag_in_base.inverse(),ros::Time::now(),tag_name,"base_link_visual");
+    broadcaster.sendTransform(tf::StampedTransform(base_in_tag,ros::Time::now(),tag_name,"base_link_visual"));    
   }
 }
 

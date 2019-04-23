@@ -63,7 +63,10 @@
     <remap from="~detections" to="/apriltags/detections1"/>
   </node>
 <node name="planning" pkg="planning" type="planning"/>
-<!-- node name="localization_node" pkg="localization" type="localization_node"/-->
+<node name="localization_encoder" pkg="localization" type="localization_encoder"/>
+<node name="localization_node_2cam" pkg="localization" type="localization_node_2cam"/>
+<node name="localization_filter" pkg="localization" type="localization_filter"/>
+<node name="localize_visual" pkg="localization" type="localize_visual"/>
 <node name="tf_broadcaster_node" pkg="mecanum_sim" type="tf_broadcaster_node"></node>
 
 </launch>

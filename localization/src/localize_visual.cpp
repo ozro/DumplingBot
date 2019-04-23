@@ -14,7 +14,7 @@ int main(int argc, char** argv){
     node.advertise<nav_msgs::Odometry>("vo_odom", 5);
 
   tf::TransformListener listener;
-  listener.waitForTransform("/base_link","/map",ros::Time::now(),ros::Duration(1.0));
+  listener.waitForTransform("/base_link_visual","/map",ros::Time::now(),ros::Duration(1.0));
   ros::Rate rate(100.0);
   while (node.ok()){
     tf::StampedTransform transform;
@@ -23,7 +23,7 @@ int main(int argc, char** argv){
       nav_msgs::Odometry cur_pose;
       geometry_msgs::PoseStamped vec;
       geometry_msgs::PoseStamped vec_out;
-      vec.header.frame_id = "base_link";
+      vec.header.frame_id = "base_link_visual";
      // 
       vec.pose.position.x =0;
       vec.pose.position.y = 0;
@@ -32,12 +32,12 @@ int main(int argc, char** argv){
       vec.pose.orientation.y = 0;
       vec.pose.orientation.z = 0;
       vec.pose.orientation.w = 1;
-      cur_pose.pose.covariance[0]  = 0.01;
-      cur_pose.pose.covariance[7]  = 0.01;
+      cur_pose.pose.covariance[0]  = 0.04;
+      cur_pose.pose.covariance[7]  = 0.16;
       cur_pose.pose.covariance[14] = 99999;
       cur_pose.pose.covariance[21] = 99999;
       cur_pose.pose.covariance[28] = 99999;
-      cur_pose.pose.covariance[35] = 0.01;
+      cur_pose.pose.covariance[35] = 0.09;
       listener.transformPose("map", vec, vec_out);
       cur_pose.header.frame_id = "map";
       cur_pose.child_frame_id = "base_link";

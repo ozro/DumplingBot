@@ -112,7 +112,7 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   //Odometry message
   nav_msgs::Odometry odom;
   odom.header.stamp = current_time;
-  odom.header.frame_id = "map";
+  odom.header.frame_id = "odom";
 
   //set the position
   odom.pose.pose.position.x = x;
@@ -125,12 +125,9 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   odom.twist.twist.linear.x = vx;
   odom.twist.twist.linear.y = vy;
   odom.twist.twist.angular.z = vth;
-  odom.pose.covariance[0]  = 0.01;
-  odom.pose.covariance[7]  = 0.01;
-  odom.pose.covariance[14] = 99999;
-  odom.pose.covariance[21] = 99999;
-  odom.pose.covariance[28] = 99999;
-  odom.pose.covariance[35] = 0.01;
+  odom.pose.covariance[0]  = 0.04;
+  odom.pose.covariance[7]  = 0.16;
+  odom.pose.covariance[35] = 0.09;
 
   //publish the message
   odom_pub.publish(odom);

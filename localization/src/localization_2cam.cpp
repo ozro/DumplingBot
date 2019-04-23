@@ -109,7 +109,7 @@ void callback(const apriltags::AprilTagDetections::ConstPtr& message,
       cur_q.z() = message->detections[index].pose.orientation.z;
       cur_q.w() = message->detections[index].pose.orientation.w;
       apriltags_time = message->header.stamp;
-      vec.header.frame_id = "optical";
+      vec.header.frame_id = "optical1";
       vec.header.stamp = apriltags_time;
       vec.pose.position.x =cur_px;
       vec.pose.position.y = cur_py;
@@ -127,7 +127,7 @@ void callback(const apriltags::AprilTagDetections::ConstPtr& message,
       cur_q.z() = message1->detections[index].pose.orientation.z;
       cur_q.w() = message1->detections[index].pose.orientation.w;
       apriltags_time = message1->header.stamp;
-      vec.header.frame_id = "optical1";
+      vec.header.frame_id = "optical";
       vec.header.stamp = apriltags_time;
       vec.pose.position.x =cur_px;
       vec.pose.position.y = cur_py;
@@ -166,7 +166,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv,"localization");
     ros::NodeHandle nh;
     listener = new (tf::TransformListener);
-    listener->waitForTransform("/base_link","/optical",ros::Time::now(),ros::Duration(3.0));
+    listener->waitForTransform("/base_link_visual","/optical",ros::Time::now(),ros::Duration(3.0));
     tf::TransformBroadcaster broadcaster;
     ros::Publisher at_pub = nh.advertise<localization::tag_pose_optical>("pose_from_at", 10);
     message_filters::Subscriber<apriltags::AprilTagDetections> detection_sub(nh, "/apriltags/detections", 1);
@@ -177,7 +177,7 @@ int main(int argc, char **argv) {
     while(ros::ok()){
       //server.localize();
       ros::spinOnce();
-      ros::Duration(0.01).sleep();
+      //ros::Duration(0.01).sleep();
 
     }
     return 0;
