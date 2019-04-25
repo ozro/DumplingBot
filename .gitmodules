@@ -1,0 +1,3 @@
+[submodule "razor_imu_9dof"]
+	path = razor_imu_9dof
+	url = https://github.com/KristofRobot/razor_imu_9dof.git
