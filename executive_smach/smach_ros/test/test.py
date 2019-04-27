@@ -6,6 +6,7 @@ import time
 import smach
 import smach_ros
 from std_msgs.msg import String
+from std_msgs.msg import Int16MultiArray
 from smach_ros.msg import *
 cur_path = []
 global reached 
@@ -24,18 +25,22 @@ class Base(smach.State):
         cur_state = robot_state()
         cur_state.state = "AtBase"
         rospy.loginfo('Executing state Base')
-        rospy.wait_for_service('Full_Path')
-        try:
-            full_path_service = rospy.ServiceProxy('Full_Path', full_path)
-            resp = full_path_service()
-            global cur_path
-            cur_path = list(resp.path)
+        rospy.Subscriber("table_order", Int16MultiArray, self.callback)
+        global cur_path
+        if len(cur_path) >0:
             cur_state.next_goal = cur_path[0]
             pub.publish(cur_state)
-            #print(cur_path)
             return "Ready"
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
+        else:
+            time.sleep(0.1)
+            pub.publish(cur_state)
+            return "Loading"
+        
+
+    def callback(self,data):
+        global cur_path
+        cur_path = list(data.data)
+
 
         
 
@@ -84,7 +89,7 @@ class AtTable(smach.State):
         if len(cur_path) >1:
             cur_state.next_goal = cur_path[0]
         else:
-            cur_path.next_goal = -1
+            cur_state.next_goal = 0
         pub.publish(cur_state)
         attable_count = 0
         if ready_to_go == False:
@@ -93,7 +98,7 @@ class AtTable(smach.State):
         attable_count = 1
         ready_to_go = False
         print(cur_path[0])
-        if cur_path[0]==1:
+        if cur_path[0]==0:
             return 'finished'
         else:
 
