@@ -125,9 +125,9 @@ void localization_encoder::encoder_callback(const rasp::EncoderCounts::ConstPtr&
   odom.twist.twist.linear.x = vx;
   odom.twist.twist.linear.y = vy;
   odom.twist.twist.angular.z = vth;
-  odom.pose.covariance[0]  = 0.04;
-  odom.pose.covariance[7]  = 0.16;
-  odom.pose.covariance[35] = 0.09;
+  odom.twist.covariance[0]  = 0.04;
+  odom.twist.covariance[7]  = 0.16;
+  odom.twist.covariance[35] = 0.09;
 
   //publish the message
   odom_pub.publish(odom);
