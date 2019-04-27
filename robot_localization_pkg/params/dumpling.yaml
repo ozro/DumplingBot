@@ -95,7 +95,7 @@ ekf_se_map:
   odom0_differential: false
   odom0_relative: false
 
-  odom1: vo_odom
+  odom1: vo_odom1
   odom1_config: [true,  true,  true,
                  false, false, true,
                  false, false, false,
@@ -105,6 +105,17 @@ ekf_se_map:
   odom1_nodelay: true
   odom1_differential: false
   odom1_relative: false
+ 
+  odom2: vo_odom2
+  odom2_config: [true,  true,  true,
+                 false, false, true,
+                 false, false, false,
+                 false, false, false,
+                 false, false, false]
+  odom2_queue_size: 10
+  odom2_nodelay: true
+  odom2_differential: false
+  odom2_relative: false
 
   imu0: imu/data
   imu0_config: [false, false, false,
