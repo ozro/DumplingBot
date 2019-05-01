@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h> 
 #include <geometry_msgs/Vector3.h> 
+#include <std_msgs/Int16MultiArray.h> 
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
@@ -35,6 +36,7 @@ class navigation{
     bool docking;
     bool docked;
     bool go;
+    bool running;
     float threshold_x,threshold_y,threshold_ang;
     std::vector<geometry_msgs::Vector3> path;
     ros::ServiceClient plan_client;
@@ -47,6 +49,7 @@ class navigation{
       cmd_vel_pub_ = n_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
      // goal_sub = n_.subscribe("/",100,&navigation::odom_callback,this);
       go = false;
+      running = false;
       called = false;
       reached_waypoint = false;
       reached_final_goal = false;
@@ -60,31 +63,61 @@ class navigation{
       stop_distance_x = 0.5;
       stop_distance_y = 0.5;
       stop_distance_ang = 1;
-      feed_forward_x = 0.1;
-      feed_forward_y = 0.53;
-      feed_forward_ang = 0.23;
+      feed_forward_x = 0.15;
+      feed_forward_y = 0.65;
+      feed_forward_ang = 0.3;
       cur_goal_index = 0;
       threshold_x = 0.05;
       threshold_y = 0.05;
       threshold_ang = 0.05;
       //get_global_plan(0,24);
       geometry_msgs::Vector3 path_pose;
-      path_pose.x = 1.85;
+      /*path_pose.x = 2.77;
       path_pose.y = 0;
       path_pose.z = 0;
       path.push_back(path_pose);
-      path_pose.x = 1.85;
+      path_pose.x = 2.77;
       path_pose.y = 0;
       path_pose.z = -1.57;
       path.push_back(path_pose);
-      path_pose.x = 1.85;
-      path_pose.y = -0.91;
+      path_pose.x = 2.77;
+      path_pose.y = -1;
       path_pose.z = -1.57;
       path.push_back(path_pose);
-      /*
-      path_pose.x = 1.85;
-      path_pose.y = -1.94;
+      path_pose.x = 2.77;
+      path_pose.y = -2;
       path_pose.z = -1.57;
+      path.push_back(path_pose);
+      path_pose.x = 2.77;
+      path_pose.y = -2.7;
+      path_pose.z = -1.57;
+      path.push_back(path_pose);
+      path_pose.x = 2.74;
+      path_pose.y = -2.77;
+      path_pose.z = -3.14;
+      path.push_back(path_pose);
+      path_pose.x = 1.33;
+      path_pose.y = -2.77;
+      path_pose.z = -3.14;
+      path.push_back(path_pose);
+      path_pose.x = 0.33;
+      path_pose.y = -2.77;
+      path_pose.z = -3.14;
+      path.push_back(path_pose);
+      path_pose.x = -0.37;
+      path_pose.y = -2.74;
+      path_pose.z = -3.14;
+      path.push_back(path_pose);*/
+      path_pose.x = -0.37;
+      path_pose.y = -2.77;
+      path_pose.z = -3.14;
+      path.push_back(path_pose);
+
+      //tag8 2.75,-2.84,-3.1
+      /*path_pose.x = -0.38;
+      path_pose.y = -2.79;
+      path_pose.z = 1.57;
+
       path.push_back(path_pose);*/
       //cur_goal_x = path[cur_goal_index].x;
       //cur_goal_y = path[cur_goal_index].y;
@@ -106,7 +139,7 @@ class navigation{
     }
     ~navigation(){}
     void odom_callback(const nav_msgs::Odometry::ConstPtr& message);
-    void navigate_callback(const std_msgs::);
+    void navigate_callback(const std_msgs::Int16MultiArray::ConstPtr& message);
     void stop();
     bool driveForwardOdom(double distance);
     bool turnOdom(bool clockwise, double radians);
@@ -156,6 +189,7 @@ void navigation::get_global_plan(int start, int goal){
   if (plan_client.call(get_plan))
   { 
     path = get_plan.response.path;
+    ROS_INFO("AAA");
   }
   else
   {
@@ -163,72 +197,101 @@ void navigation::get_global_plan(int start, int goal){
   }
 
 }
-void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message){
-  called = true;
-  /*need ro change to navigate odom type*/
-  cur_x = odom_message->pose.pose.position.x;
-  cur_y = odom_message->pose.pose.position.y;
-  tf::Quaternion q(
-      odom_message->pose.pose.orientation.x,
-      odom_message->pose.pose.orientation.y,
-      odom_message->pose.pose.orientation.z,
-      odom_message->pose.pose.orientation.w);
-  tf::Matrix3x3 m(q);
-  double roll, pitch, yaw;
-  m.getRPY(roll, pitch, yaw);
-  cur_ang = yaw;
-  //ROS_INFO("cur_x:%f, cur_y:%f, cur_z:%f",cur_x,cur_y,cur_ang);
-  if(controlled == false){
+void navigation::navigate_callback(const std_msgs::Int16MultiArray::ConstPtr& message){
+  if(running == false){
+    if (message->data.size()>1){
+      int start = message->data[0];
+      int goal = message->data[1];
+     // ROS_INFO("%d",start);
+     // ROS_INFO("%d",goal);
+      //get_global_plan(start,goal);
+      go = true;
+      running = true;
+    }
     
-    controller();
-  }
-  if(docking){
 
-    del_x = cur_goal_x-cur_x;
-    del_y = cur_goal_y-cur_y;
-    del_ang = cur_goal_ang-cur_ang;
-    if(cur_ang>-pi/4 &&cur_ang <=pi/4){
+  }
+
+}
+void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message){
+  if(running == true){
+    called = true;
+    /*need ro change to navigate odom type*/
+    cur_x = odom_message->pose.pose.position.x;
+    cur_y = odom_message->pose.pose.position.y;
+    tf::Quaternion q(
+        odom_message->pose.pose.orientation.x,
+        odom_message->pose.pose.orientation.y,
+        odom_message->pose.pose.orientation.z,
+        odom_message->pose.pose.orientation.w);
+    tf::Matrix3x3 m(q);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
+    cur_ang = yaw;
+    ROS_INFO("cur_x:%f, cur_y:%f, cur_z:%f",cur_x,cur_y,cur_ang);
+    if(controlled == false){
+      
+      controller();
+    }
+    if(docking){
+      ROS_INFO("cur_goal_x:%f, cur_goal_y:%f, cur_goal_z:%f",cur_goal_x,cur_goal_y,cur_goal_ang);
       del_x = cur_goal_x-cur_x;
       del_y = cur_goal_y-cur_y;
-    }
-    //right
-    if(cur_ang<=-pi/4 &&cur_ang >-3*pi/4){
-      del_x = -(cur_goal_y-cur_y);
-      del_y = cur_goal_x-cur_x;
-    }
-    //down
-    if(cur_ang<=-3*pi/4 &&cur_ang >3*pi/4){
-      del_x = -(cur_goal_x-cur_x);
-      del_y = -(cur_goal_y-cur_y);
-    }
-    //left
-    if(cur_ang>pi/4 &&cur_ang <=3*pi/4){
-      del_x = cur_goal_y-cur_y;
-      del_y = -(cur_goal_x-cur_x);
-    }
-    
-    if(fabs(del_x)>threshold_x || fabs(del_y)>threshold_y || fabs(del_ang)>threshold_ang){
+      del_ang = cur_goal_ang-cur_ang;
+      if(cur_ang>-pi/4 &&cur_ang <=pi/4){
+        del_x = cur_goal_x-cur_x;
+        del_y = cur_goal_y-cur_y;
+      }
+      //right
+      if(cur_ang<=-pi/4 &&cur_ang >-3*pi/4){
+        del_x = -(cur_goal_y-cur_y);
+        del_y = cur_goal_x-cur_x;
+      }
+      //down
+      if(cur_ang<=-3*pi/4 ||cur_ang >3*pi/4){
+        del_x = -(cur_goal_x-cur_x);
+        del_y = -(cur_goal_y-cur_y);
+        
+      }
+      //left
+      if(cur_ang>pi/4 &&cur_ang <=3*pi/4){
+        del_x = cur_goal_y-cur_y;
+        del_y = -(cur_goal_x-cur_x);
+      }
+      if (fabs(del_ang)>pi){
+        if (del_ang >0){
+          del_ang = del_ang - 2*pi;
+        }else{
+          del_ang = del_ang + 2*pi;
+        }
+        ROS_INFO("del_ang!!!!!!!!!!!:%f,%f",del_ang,cur_ang);
+      }
+      
+      if(fabs(del_x)>threshold_x || fabs(del_y)>threshold_y || fabs(del_ang)>threshold_ang){
 
-      int sign_x = get_sign(del_x);
-      int sign_y = get_sign(del_y);
-      int sign_ang = get_sign(del_ang);
-      geometry_msgs::Twist cmd;
-      cmd.linear.x = get_velocity(del_x,max_speed_linear,threshold_x,stop_distance_x,sign_x,feed_forward_x);
-      cmd.linear.y = get_velocity(del_y,max_speed_linear,threshold_y,stop_distance_y,sign_y,feed_forward_y);
-      cmd.angular.z = get_velocity(del_ang,max_speed_angular,threshold_ang,stop_distance_ang,sign_ang,feed_forward_ang);
-      ROS_INFO("Docking");
-      ROS_INFO("del_x:%f, del_y:%f, del_z:%f",del_x,del_y,del_ang);
-      cmd_vel_pub_.publish(cmd);
-    }else{
-      docked = true;
+        int sign_x = get_sign(del_x);
+        int sign_y = get_sign(del_y);
+        int sign_ang = get_sign(del_ang);
+        geometry_msgs::Twist cmd;
+        cmd.linear.x = get_velocity(del_x,max_speed_linear,threshold_x,stop_distance_x,sign_x,feed_forward_x);
+        cmd.linear.y = get_velocity(del_y,max_speed_linear,threshold_y,stop_distance_y,sign_y,feed_forward_y);
+        cmd.angular.z = get_velocity(del_ang,max_speed_angular,threshold_ang,stop_distance_ang,sign_ang,feed_forward_ang);
+        ROS_INFO("Docking");
+        ROS_INFO("del_x:%f, del_y:%f, del_z:%f",del_x,del_y,del_ang);
+        ROS_INFO("cmd_x:%f, cmd_y:%f, cmd_z:%f",cmd.linear.x,cmd.linear.y,cmd.angular.z);
+        cmd_vel_pub_.publish(cmd);
+      }else{
+        docked = true;
+      }
+      
     }
-    
   }
+  
 }
 
 bool navigation::controller(){
   controlled = true;
-  if(called== true){
+  if(called== true && running == true && path.size()>0){
     cur_goal_x = path[cur_goal_index].x;
     cur_goal_y = path[cur_goal_index].y;
     cur_goal_ang = path[cur_goal_index].z;
@@ -276,7 +339,7 @@ bool navigation::controller(){
         del_y = cur_goal_x-cur_x;
       }
       //down
-      if(cur_ang<=-3*pi/4 &&cur_ang >3*pi/4){
+      if(cur_ang<=-3*pi/4 ||cur_ang >3*pi/4){
         del_x = -(cur_goal_x-cur_x);
         del_y = -(cur_goal_y-cur_y);
       }
@@ -285,6 +348,15 @@ bool navigation::controller(){
         del_x = cur_goal_y-cur_y;
         del_y = -(cur_goal_x-cur_x);
       }
+      if (fabs(del_ang)>pi){
+        if (del_ang >0){
+          del_ang = del_ang - 2*pi;
+        }else{
+          del_ang = del_ang + 2*pi;
+        }
+        ROS_INFO("del_ang!!!!!!!!!!!!!!!1:%f",del_ang);
+      }
+       
       ROS_INFO("for current goal");
       ROS_INFO("del_x:%f, del_y:%f, del_z:%f",del_x,del_y,del_ang);
       if(!reached_waypoint){
@@ -323,7 +395,8 @@ bool navigation::controller(){
         }else{
           stop();
           ROS_INFO("FINISH!!!!!!!!!!!!!!!!!!!!!!!!!!!11");
-          ros::shutdown();
+          running = false;
+          go = false;
           reached_final_goal = true;
         } 
       }

@@ -17,6 +17,7 @@ global transit_count
 # define state Foo
 global attable_count
 pub = rospy.Publisher('robot_state', robot_state, queue_size=10)
+nav_pub = rospy.Publisher('navigate', Int16MultiArray, queue_size=10)
 class Base(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['Loading','Ready'])
@@ -30,6 +31,7 @@ class Base(smach.State):
         if len(cur_path) >0:
             cur_state.next_goal = cur_path[0]
             pub.publish(cur_state)
+            nav_pub.publish([0,cur_path[0]])
             return "Ready"
         else:
             time.sleep(0.1)
