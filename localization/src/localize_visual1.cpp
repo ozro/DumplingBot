@@ -11,10 +11,10 @@ int main(int argc, char** argv){
   ros::NodeHandle node;
 
   ros::Publisher odom_pub = 
-    node.advertise<nav_msgs::Odometry>("vo_odom1", 1);
+    node.advertise<nav_msgs::Odometry>("vo_odom1", 5);
 
   tf::TransformListener listener;
-  listener.waitForTransform("/base_link_visual","/map",ros::Time::now(),ros::Duration(1.0));
+  listener.waitForTransform("/base_link_visual1","/map",ros::Time::now(),ros::Duration(1.0));
   ros::Rate rate(100.0);
   while (node.ok()){
     tf::StampedTransform transform;
@@ -23,7 +23,7 @@ int main(int argc, char** argv){
       nav_msgs::Odometry cur_pose;
       geometry_msgs::PoseStamped vec;
       geometry_msgs::PoseStamped vec_out;
-      vec.header.frame_id = "base_link_visual";
+      vec.header.frame_id = "base_link_visual1";
      // 
       vec.pose.position.x =0;
       vec.pose.position.y = 0;

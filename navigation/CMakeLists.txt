@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(localization)
+project(navigation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -12,11 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   geometry_msgs
-  message_generation
   nav_msgs
-  apriltags
   tf
-  rasp
+  apriltags
 )
 find_package(Eigen3 REQUIRED)
 ## System dependencies are found with CMake's conventions
@@ -58,12 +56,7 @@ find_package(Eigen3 REQUIRED)
 #   Message1.msg
 #   Message2.msg
 # )
-add_message_files(
-   FILES
-   EncoderCounts.msg
-   tag_pose_optical.msg
-#   Message2.msg
-)
+
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -79,15 +72,11 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
 generate_messages(
    DEPENDENCIES
    std_msgs
-   geometry_msgs
 )
+
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -118,11 +107,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES localization
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
-  CATKIN_DEPENDS message_runtime roscpp rospy std_msgs geometry_msgs
 )
 
 ###########
@@ -150,24 +138,15 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(localization_node src/localization.cpp)
-add_dependencies(localization_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localization_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
-add_executable(localization_node_2cam src/localization_2cam.cpp)
-add_dependencies(localization_node_2cam ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localization_node_2cam ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
-add_executable(localization_encoder src/localization_encoder.cpp)
-add_dependencies(localization_encoder ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localization_encoder ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
-add_executable(localize_visual src/localize_visual.cpp)
-add_dependencies(localize_visual ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localize_visual ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
-add_executable(localize_visual2 src/localize_visual2.cpp)
-add_dependencies(localize_visual2 ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localize_visual2 ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
-add_executable(localization_filter src/localization_tf_filter.cpp)
-add_dependencies(localization_filter ${catkin_EXPORTED_TARGETS})
-target_link_libraries(localization_filter ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+add_executable(navigation_node src/navigation.cpp)
+add_dependencies(navigation_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} )
+target_link_libraries(navigation_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+add_executable(navigation_test_node src/navigation_test.cpp)
+add_dependencies(navigation_test_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} )
+target_link_libraries(navigation_test_node ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+add_executable(test_nav src/test_nav.cpp)
+add_dependencies(test_nav ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} )
+target_link_libraries(test_nav ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

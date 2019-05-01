@@ -15,10 +15,10 @@ ekf_se_odom:
   world_frame: odom
 
   odom0: encoder_odom
-  odom0_config: [false, false, false,
-                 false, false, false,
-                 true,  true,  true,
+  odom0_config: [true, true, true,
                  false, false, true,
+                 false,  false,  false,
+                 false, false, false,
                  false, false, false]
   odom0_queue_size: 10
   odom0_nodelay: true
@@ -85,10 +85,10 @@ ekf_se_map:
   world_frame: map
 
   odom0: encoder_odom
-  odom0_config: [false, false, false,
-                 false, false, false,
-                 true,  true,  true,
+  odom0_config: [true, true, true,
                  false, false, true,
+                 false,  false,  false,
+                 false, false, false,
                  false, false, false]
   odom0_queue_size: 10
   odom0_nodelay: true

@@ -35,9 +35,9 @@ class localization{
   public:
     
     void init(){
-      april_detection = n_.subscribe("/apriltags/detections1",5,&localization::detection_callback,this);
+      april_detection = n_.subscribe("/apriltags/detections",5,&localization::detection_callback,this);
       command_pub = n_.advertise<geometry_msgs::Twist>("cmd_vel",10);
-      odom_pub = n_.advertise<nav_msgs::Odometry>("vo_odom",10);
+      odom_pub = n_.advertise<nav_msgs::Odometry>("vo_odom1",10);
       ros::NodeHandle n_private("~");
       //initialize_map();
 

@@ -109,7 +109,7 @@ void callback(const apriltags::AprilTagDetections::ConstPtr& message,
       cur_q.z() = message->detections[index].pose.orientation.z;
       cur_q.w() = message->detections[index].pose.orientation.w;
       apriltags_time = message->header.stamp;
-      vec.header.frame_id = "optical1";
+      vec.header.frame_id = "optical";
       vec.header.stamp = apriltags_time;
       vec.pose.position.x =cur_px;
       vec.pose.position.y = cur_py;
@@ -127,7 +127,7 @@ void callback(const apriltags::AprilTagDetections::ConstPtr& message,
       cur_q.z() = message1->detections[index].pose.orientation.z;
       cur_q.w() = message1->detections[index].pose.orientation.w;
       apriltags_time = message1->header.stamp;
-      vec.header.frame_id = "optical";
+      vec.header.frame_id = "optical1";
       vec.header.stamp = apriltags_time;
       vec.pose.position.x =cur_px;
       vec.pose.position.y = cur_py;
