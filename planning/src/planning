@@ -1,0 +1,132 @@
+#!/usr/bin/env python
+import rospy
+import networkx as nx
+import csv
+#import matplotlib.pyplot as plt
+from planning.srv import *
+from geometry_msgs.msg import Vector3
+
+class Planer:
+	def __init__(self):
+		self.map_int2str ={} 
+		self.map_str2int ={} 
+		self.map_int2state ={} 
+		self.G=nx.DiGraph()
+	def read_cvs(self):
+		with open('/home/jessyxie/dumpling_ws/src/planning/include/planning/planning_map_int2str.csv', mode='r') as infile:
+			reader = csv.reader(infile)
+			self.map_int2str= {int(rows[0]):str(rows[1]) for rows in reader}
+		with open('/home/jessyxie/dumpling_ws/src/planning/include/planning/planning_map_str2int.csv', mode='r') as infile:
+			reader = csv.reader(infile)
+			self.map_str2int= {str(rows[0]):int(rows[1]) for rows in reader}
+		with open('/home/jessyxie/dumpling_ws/src/planning/include/planning/node_position.csv', mode='r') as infile:
+			reader = csv.reader(infile)
+			self.map_int2state= {int(rows[0]):(float(rows[1]),float(rows[2]),float(rows[3])) for rows in reader}	
+		#print(self.map_int2state)
+	def handle_plan_path(self,req):
+		start = self.map_int2str[req.start]
+		goal = self.map_int2str[req.goal]
+		path = nx.astar_path(self.G,start,goal)
+		result = []
+		for node in path:
+			map_state = self.map_str2int[node]
+			state = Vector3()
+			cur_state = self.map_int2state[map_state]
+			state.x = cur_state[0]
+			state.y = cur_state[1]
+			state.z = cur_state[2]
+			#result.append()
+			result.append(state)
+		print(result)
+		return planResponse(result)
+
+	def planning_server(self):
+		 rospy.init_node('planning_server')
+		 s = rospy.Service('plan_path', plan, self.handle_plan_path)
+		 print("ready to plan path")
+		 rospy.spin()
+
+	def initialize_map(self):
+		
+		self.G.add_nodes_from(["n1_up","n1_down","n1_left","n1_right"])
+		self.G.add_edges_from([("n1_up","n1_left"),("n1_left","n1_down"),("n1_down","n1_right"),("n1_right","n1_up")])
+		self.G.add_edges_from([("n1_left","n1_up"),("n1_down","n1_left"),("n1_right","n1_down"),("n1_up","n1_right")])
+
+		self.G.add_nodes_from(["n2_up","n2_down","n2_left","n2_right"])
+		self.G.add_edges_from([("n2_up","n2_left"),("n2_left","n2_down"),("n2_down","n2_right"),("n2_right","n2_up")])
+		self.G.add_edges_from([("n2_left","n2_up"),("n2_down","n2_left"),("n2_right","n2_down"),("n2_up","n2_right")])
+
+		self.G.add_nodes_from(["n3_up","n3_down","n3_left","n3_right"])
+		self.G.add_edges_from([("n3_up","n3_left"),("n3_left","n3_down"),("n3_down","n3_right"),("n3_right","n3_up")])
+		self.G.add_edges_from([("n3_left","n3_up"),("n3_down","n3_left"),("n3_right","n3_down"),("n3_up","n3_right")])
+
+		self.G.add_nodes_from(["n4_up","n4_down","n4_left","n4_right"])
+		self.G.add_edges_from([("n4_up","n4_left"),("n4_left","n4_down"),("n4_down","n4_right"),("n4_right","n4_up")])
+		self.G.add_edges_from([("n4_left","n4_up"),("n4_down","n4_left"),("n4_right","n4_down"),("n4_up","n4_right")])
+
+		self.G.add_nodes_from(["n5_up","n5_down","n5_left","n5_right"])
+		self.G.add_edges_from([("n5_up","n5_left"),("n5_left","n5_down"),("n5_down","n5_right"),("n5_right","n5_up")])
+		self.G.add_edges_from([("n5_left","n5_up"),("n5_down","n5_left"),("n5_right","n5_down"),("n5_up","n5_right")])
+		self.G.add_nodes_from(["n6_up","n6_down","n6_left","n6_right"])
+		self.G.add_edges_from([("n6_up","n6_left"),("n6_left","n6_down"),("n6_down","n6_right"),("n6_right","n6_up")])
+		self.G.add_edges_from([("n6_left","n6_up"),("n6_down","n6_left"),("n6_right","n6_down"),("n6_up","n6_right")])
+		
+
+		self.G.add_edge("n1_up","n2_up")
+		self.G.add_edge("n2_down","n1_down")
+		self.G.add_edge("n6_up","n3_up")
+		self.G.add_edge("n3_down","n6_down")
+		self.G.add_edge("n5_up","n4_up")
+		self.G.add_edge("n4_down","n5_down")
+
+		self.G.add_edge("n2_right","n3_right")
+		self.G.add_edge("n2_right","n4_right")
+		self.G.add_edge("n3_right","n4_right")
+		self.G.add_edge("n4_left","n3_left")
+		self.G.add_edge("n4_left","n2_left")
+		self.G.add_edge("n3_left","n2_left")
+		
+
+		self.G.add_edge("n1_right","n6_right")
+		self.G.add_edge("n1_right","n5_right")
+		self.G.add_edge("n5_right","n6_right")
+		self.G.add_edge("n6_left","n1_left")
+		self.G.add_edge("n5_left","n1_left")
+		self.G.add_edge("n6_left","n5_left")
+
+
+		self.G.add_node("t1_right")
+		self.G.add_node("t2_right")
+		self.G.add_node("t3_right")
+
+		self.G.add_edge("n1_right","t3_right")
+		self.G.add_edge("n6_right","t3_right")
+
+		self.G.add_edge("n2_right","t1_right")
+		self.G.add_edge("n2_right","t2_right")
+		self.G.add_edge("n3_right","t2_right")
+
+		self.G.add_edge("t3_right","n5_right")
+
+		self.G.add_edge("t2_right","n4_right")
+		self.G.add_edge("t1_right","n3_right")
+		self.G.add_edge("t1_right","n4_right")
+
+		
+		
+		#print(G.edges())
+		'''
+		pos = nx.spring_layout(G)
+		nx.draw_networkx_nodes(G, pos, node_size = 1500)
+		nx.draw_networkx_labels(G, pos)
+		nx.draw_networkx_edges(G, pos, edgelist=black_edges, arrows=True)
+		plt.axis('off')
+		plt.show()'''
+
+
+
+if __name__ == '__main__':
+	server = Planer()
+	server.initialize_map()
+	server.read_cvs()
+	server.planning_server()
