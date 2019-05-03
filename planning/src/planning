@@ -37,6 +37,7 @@ class Planer:
 			state.z = cur_state[2]
 			#result.append()
 			result.append(state)
+		result.pop(0)
 		print(result)
 		return planResponse(result)
 
@@ -48,71 +49,23 @@ class Planer:
 
 	def initialize_map(self):
 		
-		self.G.add_nodes_from(["n1_up","n1_down","n1_left","n1_right"])
-		self.G.add_edges_from([("n1_up","n1_left"),("n1_left","n1_down"),("n1_down","n1_right"),("n1_right","n1_up")])
-		self.G.add_edges_from([("n1_left","n1_up"),("n1_down","n1_left"),("n1_right","n1_down"),("n1_up","n1_right")])
-
-		self.G.add_nodes_from(["n2_up","n2_down","n2_left","n2_right"])
-		self.G.add_edges_from([("n2_up","n2_left"),("n2_left","n2_down"),("n2_down","n2_right"),("n2_right","n2_up")])
-		self.G.add_edges_from([("n2_left","n2_up"),("n2_down","n2_left"),("n2_right","n2_down"),("n2_up","n2_right")])
-
-		self.G.add_nodes_from(["n3_up","n3_down","n3_left","n3_right"])
-		self.G.add_edges_from([("n3_up","n3_left"),("n3_left","n3_down"),("n3_down","n3_right"),("n3_right","n3_up")])
-		self.G.add_edges_from([("n3_left","n3_up"),("n3_down","n3_left"),("n3_right","n3_down"),("n3_up","n3_right")])
-
-		self.G.add_nodes_from(["n4_up","n4_down","n4_left","n4_right"])
-		self.G.add_edges_from([("n4_up","n4_left"),("n4_left","n4_down"),("n4_down","n4_right"),("n4_right","n4_up")])
-		self.G.add_edges_from([("n4_left","n4_up"),("n4_down","n4_left"),("n4_right","n4_down"),("n4_up","n4_right")])
-
-		self.G.add_nodes_from(["n5_up","n5_down","n5_left","n5_right"])
-		self.G.add_edges_from([("n5_up","n5_left"),("n5_left","n5_down"),("n5_down","n5_right"),("n5_right","n5_up")])
-		self.G.add_edges_from([("n5_left","n5_up"),("n5_down","n5_left"),("n5_right","n5_down"),("n5_up","n5_right")])
-		self.G.add_nodes_from(["n6_up","n6_down","n6_left","n6_right"])
-		self.G.add_edges_from([("n6_up","n6_left"),("n6_left","n6_down"),("n6_down","n6_right"),("n6_right","n6_up")])
-		self.G.add_edges_from([("n6_left","n6_up"),("n6_down","n6_left"),("n6_right","n6_down"),("n6_up","n6_right")])
+		self.G.add_nodes_from(["start","t1_right","t2_down","t3_down","n1_up","n1_right","n2","n3_right","n3_down","n4_down","n4_left","n5","end"])
 		
 
-		self.G.add_edge("n1_up","n2_up")
-		self.G.add_edge("n2_down","n1_down")
-		self.G.add_edge("n6_up","n3_up")
-		self.G.add_edge("n3_down","n6_down")
-		self.G.add_edge("n5_up","n4_up")
-		self.G.add_edge("n4_down","n5_down")
+		self.G.add_edge("start","n1_up")
+		self.G.add_edge("n1_up","n1_right")
+		self.G.add_edge("n1_right","t1_right")
+		self.G.add_edge("t1_right","n2")
+		self.G.add_edge("n2","n3_right")
+		self.G.add_edge("n3_right","n3_down")
 
-		self.G.add_edge("n2_right","n3_right")
-		self.G.add_edge("n2_right","n4_right")
-		self.G.add_edge("n3_right","n4_right")
-		self.G.add_edge("n4_left","n3_left")
-		self.G.add_edge("n4_left","n2_left")
-		self.G.add_edge("n3_left","n2_left")
-		
+		self.G.add_edge("n3_down","t2_down")
+		self.G.add_edge("t2_down","t3_down")
+		self.G.add_edge("t3_down","n4_down")
+		self.G.add_edge("n4_down","n4_left")
+		self.G.add_edge("n4_left","n5")
+		self.G.add_edge("n5","end")
 
-		self.G.add_edge("n1_right","n6_right")
-		self.G.add_edge("n1_right","n5_right")
-		self.G.add_edge("n5_right","n6_right")
-		self.G.add_edge("n6_left","n1_left")
-		self.G.add_edge("n5_left","n1_left")
-		self.G.add_edge("n6_left","n5_left")
-
-
-		self.G.add_node("t1_right")
-		self.G.add_node("t2_right")
-		self.G.add_node("t3_right")
-
-		self.G.add_edge("n1_right","t3_right")
-		self.G.add_edge("n6_right","t3_right")
-
-		self.G.add_edge("n2_right","t1_right")
-		self.G.add_edge("n2_right","t2_right")
-		self.G.add_edge("n3_right","t2_right")
-
-		self.G.add_edge("t3_right","n5_right")
-
-		self.G.add_edge("t2_right","n4_right")
-		self.G.add_edge("t1_right","n3_right")
-		self.G.add_edge("t1_right","n4_right")
-
-		
 		
 		#print(G.edges())
 		'''

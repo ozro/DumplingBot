@@ -22,28 +22,36 @@ int main(int argc, char** argv)
         ros::Time::now(),"map", "tag5"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi/2)), tf::Vector3(3.5, -0.91, 0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi/2)), tf::Vector3(3.5, -0.94, 0)),
         ros::Time::now(),"map", "tag6"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi/2)), tf::Vector3(3.5, -1.94, 0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi/2)), tf::Vector3(3.5, -1.81, 0)),
         ros::Time::now(),"map", "tag7"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(2.69, -3.61, 0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(2.76, -3.61, 0)),
         ros::Time::now(),"map", "tag8"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(0.39, -3.61, 0)),
-        ros::Time::now(),"map", "tag9"));
-    broadcaster.sendTransform(
-      tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(1.36, -3.61, 0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(0.60, -3.61, 0)),
         ros::Time::now(),"map", "tag20"));
     broadcaster.sendTransform(
       tf::StampedTransform(
-        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,pi/2)), tf::Vector3(-1.24, -2.78, 0)),
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,-pi)), tf::Vector3(1.81, -3.61, 0)),
+        ros::Time::now(),"map", "tag9"));
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,pi/2)), tf::Vector3(-1.22, -2.74, 0)),
         ros::Time::now(),"map", "tag10"));
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,pi/2)), tf::Vector3(-1.56, -0.96, 0)),
+        ros::Time::now(),"map", "tag1"));
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(tf::createQuaternionFromRPY(pi/2,0.0,0)), tf::Vector3(-0.305, 0.94, 0)),
+        ros::Time::now(),"map", "tag3"));
     /*
     broadcaster.sendTransform(
       tf::StampedTransform(

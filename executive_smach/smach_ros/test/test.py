@@ -31,7 +31,13 @@ class Base(smach.State):
         if len(cur_path) >0:
             cur_state.next_goal = cur_path[0]
             pub.publish(cur_state)
-            nav_pub.publish([0,cur_path[0]])
+            nav_data = [0,cur_path[0]]
+            nav = Int16MultiArray(data = nav_data)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
+            time.sleep(0.1)
             return "Ready"
         else:
             time.sleep(0.1)
@@ -100,15 +106,21 @@ class AtTable(smach.State):
         attable_count = 1
         ready_to_go = False
         print(cur_path[0])
-        if cur_path[0]==0:
+        if cur_path[0]==11:
             return 'finished'
         else:
-
+            
+            nav_data = [cur_path[0],cur_path[1]]
+            nav = Int16MultiArray(data = nav_data)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
+            nav_pub.publish(nav)
             cur_path.pop(0)
             return 'Done'
     def callback(self,data):
         global ready_to_go
-        if data.data == "Done" and attable_count == 0:
+        if data.data == "done" and attable_count == 0:
             ready_to_go = True    
 
 

@@ -2,6 +2,7 @@
 #include <geometry_msgs/Twist.h> 
 #include <geometry_msgs/Vector3.h> 
 #include <std_msgs/Int16MultiArray.h> 
+#include <std_msgs/String.h> 
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
@@ -11,11 +12,13 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sstream>
 const double pi = 3.14159;
 class navigation{
   private:
     ros::NodeHandle n_;
     ros::Publisher cmd_vel_pub_;
+    ros::Publisher state_pub_;
     tf::TransformListener listener_;
     ros::Subscriber odom_sub;
     ros::Subscriber go_sub;
@@ -47,6 +50,7 @@ class navigation{
       go_sub = n_.subscribe("/navigate",1,&navigation::navigate_callback,this);
       plan_client = n_.serviceClient<planning::plan>("plan_path");
       cmd_vel_pub_ = n_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+      state_pub_ = n_.advertise<std_msgs::String>("Transit_status", 10);
      // goal_sub = n_.subscribe("/",100,&navigation::odom_callback,this);
       go = false;
       running = false;
@@ -64,12 +68,12 @@ class navigation{
       stop_distance_y = 0.5;
       stop_distance_ang = 1;
       feed_forward_x = 0.15;
-      feed_forward_y = 0.65;
-      feed_forward_ang = 0.3;
+      feed_forward_y = 0.56;
+      feed_forward_ang = 0.27;
       cur_goal_index = 0;
-      threshold_x = 0.05;
-      threshold_y = 0.05;
-      threshold_ang = 0.05;
+      threshold_x = 0.03;
+      threshold_y = 0.03;
+      threshold_ang = 0.03;
       //get_global_plan(0,24);
       geometry_msgs::Vector3 path_pose;
       /*path_pose.x = 2.77;
@@ -111,7 +115,7 @@ class navigation{
       path_pose.x = -0.37;
       path_pose.y = -2.77;
       path_pose.z = -3.14;
-      path.push_back(path_pose);
+      //path.push_back(path_pose);
 
       //tag8 2.75,-2.84,-3.1
       /*path_pose.x = -0.38;
@@ -132,6 +136,7 @@ class navigation{
       path_pose.y = -1.3;
       path_pose.z = -1.57;
       path.push_back(path_pose);*/
+      
       ros::NodeHandle n_private("~");
       //get_global_plan(2,29);
 
@@ -202,11 +207,14 @@ void navigation::navigate_callback(const std_msgs::Int16MultiArray::ConstPtr& me
     if (message->data.size()>1){
       int start = message->data[0];
       int goal = message->data[1];
-     // ROS_INFO("%d",start);
-     // ROS_INFO("%d",goal);
-      //get_global_plan(start,goal);
+      ROS_INFO("%d",start);
+      ROS_INFO("%d",goal);
+      get_global_plan(start,goal);
+      cur_goal_index = 0;
       go = true;
       running = true;
+      reached_final_goal = false;
+      reached_waypoint = false;
     }
     
 
@@ -281,6 +289,7 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
         ROS_INFO("cmd_x:%f, cmd_y:%f, cmd_z:%f",cmd.linear.x,cmd.linear.y,cmd.angular.z);
         cmd_vel_pub_.publish(cmd);
       }else{
+        ROS_INFO("Doked already!!!!!!!!");
         docked = true;
       }
       
@@ -290,6 +299,7 @@ void navigation::odom_callback(const nav_msgs::Odometry::ConstPtr& odom_message)
 }
 
 bool navigation::controller(){
+  
   controlled = true;
   if(called== true && running == true && path.size()>0){
     cur_goal_x = path[cur_goal_index].x;
@@ -395,6 +405,14 @@ bool navigation::controller(){
         }else{
           stop();
           ROS_INFO("FINISH!!!!!!!!!!!!!!!!!!!!!!!!!!!11");
+          std_msgs::String msg;
+          std::stringstream ss;
+          ss << "Done";
+          msg.data = ss.str();
+          state_pub_.publish(msg);
+          state_pub_.publish(msg);
+          state_pub_.publish(msg);
+          ROS_INFO("AAAA");
           running = false;
           go = false;
           reached_final_goal = true;
